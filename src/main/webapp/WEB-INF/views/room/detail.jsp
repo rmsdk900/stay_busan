@@ -90,9 +90,6 @@
 				<div>
 					<p>회원가입 : <fmt:formatDate value="${roomInfo.hostVO.u_regdate}" pattern="yyyy년 MM월"/></p>
 				</div>
-				<div>
-					<p>후기 : 개</p>
-				</div>
 				
 				<div>
 					<p> 호스트 자기 소개 : </p>
