@@ -159,6 +159,12 @@
 		</div>
 		
 	</div>
+	
+	<script type="text/javascript">
+		var contextPath = '${pageContext.request.contextPath}';
+		var r_no = ${roomInfo.roomVO.r_no};	
+	</script>
+	<script src="${pageContext.request.contextPath}/resources/js/comment.js"></script>
 </c:if>
 
 <hr/>

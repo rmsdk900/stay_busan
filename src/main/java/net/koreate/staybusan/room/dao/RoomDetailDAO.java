@@ -29,6 +29,6 @@ public interface RoomDetailDAO {
 	AmenityVO getAmenities(int r_no) throws Exception;
 	
 	// 호스트 정보 불러오기
-	@Select("SELECT * FROM user WHERE (u_type=1 OR u_type=3) AND u_no=(SELECT u_no FROM rooms WHERE r_no=#{r_no})")
+	@Select("SELECT * FROM user WHERE u_type!=0 AND u_no=(SELECT u_no FROM rooms WHERE r_no=#{r_no})")
 	UserVO getRoomOwner(int r_no)throws Exception;
 }
