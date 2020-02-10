@@ -9,8 +9,8 @@
 </head>
 <body>
 	<form action="${pageContext.request.contextPath}/room/detail" method="get">
-		<input type="hidden" name="r_no" value=1 />
-		<input type="submit" value="1번 글 상세보기"/>
+		<input type="text" name="r_no" />
+		<input type="submit" value="번 글 상세보기"/>
 	</form>
 </body>
 </html>

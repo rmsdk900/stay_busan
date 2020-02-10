@@ -8,11 +8,11 @@
 <c:if test="${!empty roomInfo}">
 	<div class="room">
 		<div class="room_imgs">
-			<div>사진1</div>
-			<div>사진2</div>
-			<div>사진3</div>
-			<div>사진4</div>
-			<div>사진5</div>
+			<div>[사진1]</div>
+			<div>[사진2]</div>
+			<div>[사진3]</div>
+			<div>[사진4]</div>
+			<div>[사진5]</div>
 			<div>
 				<a href="#">사진 보기</a>
 			</div>
@@ -24,8 +24,14 @@
 					<h2>${roomInfo.roomVO.r_name}</h2>
 				</div>
 				<div>
-					<div>호스트 사진+[등급]</div>
-					<div>${roomInfo.hostVO.u_name}</div>
+					<div>[호스트 사진]</div>
+					<div>
+						${roomInfo.hostVO.u_name}
+						<c:if test="${roomInfo.hostVO.u_type == 2 or roomInfo.hostVO.u_type == 3}" >
+							<img src="${pageContext.request.contextPath}/resources/img/vip.png" style="width:20px;height:20px;" />	
+						</c:if>
+					</div>
+					
 				</div>
 				<div>
 					<p>주소 : ${roomInfo.roomVO.r_addr_main}</p>
@@ -74,7 +80,12 @@
 			<hr/>
 			<div class="room_host_description">
 				<div>
-					<h4>호스트 : ${roomInfo.hostVO.u_name}님+[등급]</h4>
+					<h4>
+						호스트 : ${roomInfo.hostVO.u_name}님
+						<c:if test="${roomInfo.hostVO.u_type == 2 or roomInfo.hostVO.u_type == 3}" >
+							<img src="${pageContext.request.contextPath}/resources/img/vip.png" style="width:20px;height:20px;"/>	
+						</c:if>
+					</h4>
 				</div>
 				<div>
 					<p>회원가입 : <fmt:formatDate value="${roomInfo.hostVO.u_regdate}" pattern="yyyy년 MM월"/></p>
@@ -97,10 +108,53 @@
 			<%@ include file="../comment/comment.jsp" %>
 			
 			<div class="room_reservation">
-			
+				<form>
+					<div>
+						<div>
+							<span>${roomInfo.roomVO.r_price}</span>
+							<span>/박</span>
+						</div>
+						<div>[평균 평점]</div>
+						<div>(후기 [후기 갯수]개)</div>
+						<hr/>
+					</div>
+					<div>
+						<div>날짜</div>
+						<div>[달력]</div>
+					</div>
+					<div>
+						<div>인원</div>
+						<div>
+							<label><input type="number" name="b_guest" /> 명</label>	
+						</div>
+					</div>
+					<div>
+						<div>합계</div>
+						<div>[총 가격]</div>
+					</div>
+					<div>
+						<input type="button" value="예약하기"/>
+					</div>
+				</form>
+				
 			</div>
 			<div class="room_message">
-				
+				<div>
+					<div>
+						<h1>쪽지 보내기</h1>
+					</div>
+				</div>
+				<div>
+					받을 사람 : ${roomInfo.hostVO.u_name}
+				</div>
+				<div>
+					<div>
+						<textarea rows="5" cols="30"></textarea>
+					</div>
+				</div>
+				<div>
+					<input type="button" value="send"/>
+				</div>
 			</div>
 		</div>
 		
