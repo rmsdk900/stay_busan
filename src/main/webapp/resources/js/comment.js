@@ -18,10 +18,10 @@ function getCommentList(page){
 		$(data.commentList).each(function(){
 			str += "<div>";
 			str += "	<div>";
-			str += "[프로필 사진]";
-			str += "	</div>";
-			str += "	<div>";
 			str += this.u_name;
+			str += "	</div>";
+			str += "	<div class='room_comment_profile' >";
+			str += getGuestImg(this.u_no);
 			str += "	</div>";
 			str += "	<div>";
 			str += getDate(this.c_regdate);
@@ -36,6 +36,20 @@ function getCommentList(page){
 		makePage(data.pageMaker);
 		setCommentTotal(data.pageMaker);
 		setStarAvg(data.star_avg);
+	});
+}
+
+// 게스트 이미지 불러오기
+function getGuestImg(u_no){
+	$.getJSON(contextPath+"/getGuestImg/"+u_no, function(data){
+		console.log(data);
+		
+		var fileInfo = getFileInfo(data[0]);
+		var html = "<img src='"+fileInfo.imgSrc+"' alt='게스트 사진' class='FilledImg' />";
+		$(".room_comment_profile").html(html);
+		
+		
+		
 	});
 }
 
@@ -71,6 +85,9 @@ $(".room_comments_pagination").on("click", "li a", function(e){
 });
 
 function setCommentTotal(pm){
+	
+	$(".room_reservation_total").html("(후기 "+pm.totalCount+"개)")
+	
 	return $(".room_comments_total").html(pm.totalCount+" 후기");
 }
 
@@ -78,5 +95,6 @@ function setStarAvg(avg){
 	var str="";
 	str += "★ ";
 	str += avg;
+	$(".room_reservation_star").html(str);
 	return $(".room_comments_star_avg").html(str);
 }

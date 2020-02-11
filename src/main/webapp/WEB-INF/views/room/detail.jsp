@@ -21,6 +21,10 @@
 		height: 300px;
 		/* background-color: blue; */
 	}
+	.room_host_img{
+		width: 100px;
+		height: 100px;
+	}
 	
 	.FilledImg{
 		
@@ -47,7 +51,7 @@
 					<h2>${roomInfo.roomVO.r_name}</h2>
 				</div>
 				<div>
-					<div>[호스트 사진]</div>
+					<div class="room_host_img"></div>
 					<div>
 						${roomInfo.hostVO.u_name}
 						<c:if test="${roomInfo.hostVO.u_type == 2 or roomInfo.hostVO.u_type == 3}" >
@@ -134,8 +138,8 @@
 							<span>${roomInfo.roomVO.r_price}</span>
 							<span>/박</span>
 						</div>
-						<div>[평균 평점]</div>
-						<div>(후기 [후기 갯수]개)</div>
+						<div class="room_reservation_star">[평균 평점]</div>
+						<div class="room_reservation_total">(후기 [후기 갯수]개)</div>
 						<hr/>
 					</div>
 					<div>
@@ -190,7 +194,7 @@
 			
 			for(var i=0;i<5;i++){
 				var fileInfo = getFileInfo(data[i]);
-				console.log(fileInfo);
+				/* console.log(fileInfo); */
 				var html = "<div ";
 				if(i == 0){
 					html += "class='room_img_primary'";
@@ -203,8 +207,15 @@
 				$(".room_imgs").append(html);
 				
 			}
+		});
+		
+		$.getJSON(contextPath+"/getHostImg/"+r_no, function(data){
 			
 			
+			var fileInfo = getFileInfo(data[0]);
+			/* console.log(fileInfo); */
+			var html = "<img src='"+fileInfo.imgSrc+"' alt='호스트 사진' class='FilledImg' />";
+			$(".room_host_img").append(html);
 			
 			
 		});

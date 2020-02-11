@@ -59,6 +59,24 @@ public class FileController {
 		return ris.getImgs(r_no);
 	}
 	
+	@GetMapping("getHostImg/{r_no}")
+	public List<String> getHostImg(@PathVariable("r_no") int r_no)throws Exception{
+		System.out.println("호스트 사진 불러오는 방 번호 : "+r_no);
+		
+		List<String> hostImg = ris.getHostImg(r_no);
+		
+		System.out.println("호스트 사진 : "+hostImg);
+		
+		return hostImg;
+	}
+	
+	@GetMapping("getGuestImg/{u_no}")
+	public List<String> getGuestImg(@PathVariable("u_no") int u_no)throws Exception{
+		System.out.println("사진 불러올 게스트 번호 : "+u_no);
+		
+		return ris.getGuestImg(u_no);
+	}
+	
 	@GetMapping("/displayFile")
 	public ResponseEntity<byte[]> displayFile(
 			String fileName) throws Exception{

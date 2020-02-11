@@ -26,6 +26,20 @@ public class RoomImgServiceImpl implements RoomImgService{
 	public List<String> getImgs(int r_no) throws Exception {
 		return dao.getImgs(r_no);
 	}
+
+	@Override
+	public List<String> getHostImg(int r_no) throws Exception {
+		return dao.getHostImg(r_no);
+	}
+
+	@Override
+	public List<String> getGuestImg(int u_no) throws Exception {
+		return dao.getGuestImg(u_no);
+	}
+	
+	
+	
+	
 	
 	
 	

@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<style>
+	.room_comment_profile{
+		width: 100px;
+		height: 100px;
+	}
+	.FilledImg{
+		
+		width: 100%;
+		height: 100%;
+	}
+</style>
 <div class="room_comments">
 	<div>
 		<div>
