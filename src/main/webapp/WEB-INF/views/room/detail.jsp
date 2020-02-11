@@ -3,16 +3,39 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../common/header.jsp" %>
-
+<script type="text/javascript">
+	var r_no = ${roomInfo.roomVO.r_no};	
+</script>
+<style>
+	.room_imgs {
+		display: flex;
+		
+	}
+	.room_img_primary{
+		width: 600px;
+		height: 600px;
+		/* background-color: red; */
+	}
+	.room_img_etc{
+		width: 300px;
+		height: 300px;
+		/* background-color: blue; */
+	}
+	
+	.FilledImg{
+		
+		width: 100%;
+		height: 100%;
+	}
+	
+</style>
 <!-- roomInfo -->
 <c:if test="${!empty roomInfo}">
 	<div class="room">
-		<div class="room_imgs">
-			<div>[사진1]</div>
-			<div>[사진2]</div>
-			<div>[사진3]</div>
-			<div>[사진4]</div>
-			<div>[사진5]</div>
+		<div >
+			<div class="room_imgs">
+				
+			</div>
 			<div>
 				<a href="#">사진 보기</a>
 			</div>
@@ -157,11 +180,35 @@
 		
 	</div>
 	
-	<script type="text/javascript">
-		var contextPath = '${pageContext.request.contextPath}';
-		var r_no = ${roomInfo.roomVO.r_no};	
-	</script>
+	
 	<script src="${pageContext.request.contextPath}/resources/js/comment.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/upload.js"></script>
+	<script>
+		$.getJSON(contextPath+"/getImgs/"+r_no, function(data){
+			// 첨부파일 목록 = data
+			console.log(data);
+			
+			for(var i=0;i<5;i++){
+				var fileInfo = getFileInfo(data[i]);
+				console.log(fileInfo);
+				var html = "<div ";
+				if(i == 0){
+					html += "class='room_img_primary'";
+				}else {
+					html += "class='room_img_etc'";
+				}
+				html += ">";
+				html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' />";
+				html += "</div>";
+				$(".room_imgs").append(html);
+				
+			}
+			
+			
+			
+			
+		});
+	</script>
 </c:if>
 
 <hr/>

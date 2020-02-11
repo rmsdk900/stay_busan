@@ -1,5 +1,7 @@
 package net.koreate.staybusan.room.vo;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data

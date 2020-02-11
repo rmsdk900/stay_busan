@@ -58,13 +58,15 @@ public class FileUtils {
 	
 	
 	
-	// ----------------공사 중-----------------------------------
-	public List<String> uploadFile(MultipartFile[] files) throws Exception{
+	
+	// 전체 파일 올리기(controller랑 연결)
+	public List<String> uploadFile(MultipartFile[] files, int u_no, int r_no) throws Exception{
 		List<String> fileList = new ArrayList<>();
 		
 		for(MultipartFile file : files) {
 			try {
-				String fileName = uploadFile(file);
+				String fileName = uploadFile(file, u_no, r_no);
+				System.out.println("fileList에 넣은 파일 이름 : "+fileName);
 				fileList.add(fileName);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -75,62 +77,66 @@ public class FileUtils {
 		return fileList;
 	}
 	
-	public String uploadFile(MultipartFile file) throws Exception{
-		String uploadFolder = getFolder();
-		System.out.println("uploadFolder : "+uploadFolder);
-		String originalName = file.getOriginalFilename();
+	// 파일 경로 설정
+	public String getFolder(int u_no, int r_no) {
+		String str = u_no+File.separator+r_no;
+		System.out.println(u_no+"번째 회원의 "+r_no+"번 방 폴더 : "+str);
 		
+		return str;
+	}
+	
+	
+	// 각각의 파일 올리기
+	public String uploadFile(MultipartFile file, int u_no, int r_no) throws Exception{
+		String uploadFolder = getFolder(u_no, r_no);
+		System.out.println("upload 안의  Folder : "+uploadFolder);
+		String originalName = file.getOriginalFilename();
 		
 		UUID uid = UUID.randomUUID();
 		String savedName = uid.toString().replace("-", "")+"_"+originalName;
-		System.out.println("uploadFile savedName : "+savedName);
+		System.out.println("저장될 파일 이름 : "+savedName);
 		
 		File uploadFolderFile = new File(uploadPath, uploadFolder);
 		if(!uploadFolderFile.exists()) {
 			uploadFolderFile.mkdirs();
+			System.out.println("/유저 번호/방 번호 폴더 생성");
 		}
 		File upload = new File(uploadPath+File.separator+uploadFolder, savedName);
 		
-		System.out.println("upload file absolute path"+upload.getAbsolutePath());
+		System.out.println("upload file absolute path : "+upload.getAbsolutePath());
 		
 		byte[] fileData = file.getBytes();
 		
 		FileCopyUtils.copy(fileData, upload);
 		
+		System.out.println("파일 생성 완료");
+		
 		return makeFileUploadName(uploadFolder, savedName);
 	}
 	
+	
+	//파일 이름 만들기
 	private String makeFileUploadName(String uploadFolder, String savedName) throws IOException{
 		
+		//확장자
 		String ex = savedName.substring(savedName.lastIndexOf(".")+1);
-		String thumbnail = uploadPath+File.separator+uploadFolder+File.separator+savedName;
+		// 전체 파일 경로 
+		String entirePath = uploadPath+File.separator+uploadFolder+File.separator+savedName;
 		
-		
-		System.out.println("thumbnail : "+thumbnail);
+		System.out.println("makeFileUploadName() 파일 전체 경로 : "+entirePath);
 		
 		if(MediaUtils.getMediaType(ex)!= null) {
-			System.out.println("IMAGE");
-			
-			try {
-				File file = new File(uploadPath+File.separator+uploadFolder, savedName);
-				
-				BufferedImage fileImage = ImageIO.read(file);
-				
-				BufferedImage sourceImage = Scalr.resize(fileImage, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT,100);
-				
-				thumbnail = uploadPath+File.separator+uploadFolder+File.separator+"s_"+savedName;
-				file = new File(thumbnail);
-				
-				ImageIO.write(sourceImage, ex, file);
-			} catch (Exception e) {
-				e.printStackTrace();
-				throw new IOException();
-			} 
-			
+			System.out.println("이미지 파일");
+		}else {
+			System.out.println("이미지 파일 아님");
+			throw new IOException();
 		}
 		
-		return thumbnail.substring(uploadPath.length()).replace(File.separatorChar, '/');
+		return entirePath.substring(uploadPath.length()).replace(File.separatorChar, '/');
 	}
+	
+	
+	// ----------------공사 중-----------------------------------
 	
 	public byte[] displayFile(String fileName) throws IOException{
 		System.out.println("보여줄 fileName : "+fileName);
@@ -168,13 +174,7 @@ public class FileUtils {
 		return header;
 	}
 	
-	public String getFolder() {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String str = sdf.format(new Date());
-		System.out.println(str);
-		
-		return str.replace("-", File.separator);
-	}
+	
 
 	public String deleteAllFiles(List<String> files) {
 		for(String file : files) {
