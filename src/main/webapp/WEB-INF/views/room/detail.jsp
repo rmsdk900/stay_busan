@@ -178,7 +178,9 @@
 					</div>
 					<div>
 						<div>날짜</div>
-						<div>[달력]</div>
+						<div>
+							<input type="text" id="startDate" name="r_date_from" readonly>-<input type="text" id="endDate" name="r_date_to" readonly>
+						</div>
 					</div>
 					<div>
 						<div>인원</div>
@@ -265,6 +267,7 @@
 	</script>
 	<script src="${pageContext.request.contextPath}/resources/js/pictureModal.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/messageModal.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/detailDate.js"></script>
 </c:if>
 
 <hr/>

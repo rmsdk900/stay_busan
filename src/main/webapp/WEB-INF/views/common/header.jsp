@@ -18,6 +18,11 @@
 	<script type="text/javascript">
 		var contextPath = '${pageContext.request.contextPath}';	
 	</script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script type="text/javascript" src="${pageContext.request.contextPath}/resources/jquery-ui/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/jquery-ui/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+   	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
