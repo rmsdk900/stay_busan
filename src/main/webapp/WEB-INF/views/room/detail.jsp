@@ -196,23 +196,15 @@
 				</form>
 				
 			</div>
+			<br/>
 			<div class="room_message">
-				<div>
-					<div>
-						<h1>쪽지 보내기</h1>
-					</div>
-				</div>
-				<div>
-					받을 사람 : ${roomInfo.hostVO.u_name}
-				</div>
-				<div>
-					<div>
-						<textarea rows="5" cols="30"></textarea>
-					</div>
-				</div>
-				<div>
-					<input type="button" value="send"/>
-				</div>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#messageModal" data-whatever="${roomInfo.hostVO.u_name}">
+					호스트에게 쪽지 보내기
+				</button>
+				
+				<%@ include file="./messageModal.jsp" %>
+				
+				
 			</div>
 		</div>
 		
@@ -266,6 +258,7 @@
 		});
 	</script>
 	<script src="${pageContext.request.contextPath}/resources/js/pictureModal.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/messageModal.js"></script>
 </c:if>
 
 <hr/>
