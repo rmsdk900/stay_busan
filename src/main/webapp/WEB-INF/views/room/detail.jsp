@@ -8,19 +8,47 @@
 </script>
 <style>
 	.room_imgs {
-		display: flex;
+		display: grid;
+		grid-template-columns: auto auto auto;
+		width:100%;
 		
 	}
 	.room_img_primary{
 		width: 600px;
 		height: 600px;
-		/* background-color: red; */
+		overflow: hidden;
 	}
+	.room_img_etc{
+		overflow: hidden;
+	}
+	.room_img_third{
+		overflow: hidden;
+	}
+	.room_img_primary img {
+		transform:scale(1);
+		transition:.3s;
+	}
+	
+	.room_img_primary:hover img {
+		transform:scale(1.1);
+	}
+	
+	
+	
 	.room_img_etc{
 		width: 300px;
 		height: 300px;
-		/* background-color: blue; */
 	}
+	
+	.room_img_etc img {
+		transform:scale(1);
+		transition:.3s;
+	}
+	
+	.room_img_etc:hover img {
+		transform:scale(1.1);
+	}
+	
 	.room_host_img{
 		width: 100px;
 		height: 100px;
@@ -38,11 +66,17 @@
 	<div class="room">
 		<div >
 			<div class="room_imgs">
-				
+				<div class='room_img_primary'></div>
+				<div class='room_img_second'></div>
+				<div class='room_img_third'></div>
 			</div>
-			<div>
-				<a href="#">사진 보기</a>
+			<!-- 모달 연결 버튼 -->
+			<div class="room_more_imgs">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomPicturesModal">
+					사진 보기
+				</button>
 			</div>
+			<%@ include file="./pictureModal.jsp" %>
 		</div>
 		<hr/>
 		<div class="room_wrapper">
@@ -190,21 +224,32 @@
 	<script>
 		$.getJSON(contextPath+"/getImgs/"+r_no, function(data){
 			// 첨부파일 목록 = data
-			console.log(data);
+			/* console.log(data); */
 			
 			for(var i=0;i<5;i++){
 				var fileInfo = getFileInfo(data[i]);
 				/* console.log(fileInfo); */
-				var html = "<div ";
+				
 				if(i == 0){
-					html += "class='room_img_primary'";
-				}else {
+					var html = "";
+					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' />";
+					$(".room_img_primary").html(html);	
+				} else if(i==1 || i==2) {
+					var html = "<div ";
 					html += "class='room_img_etc'";
+					html += ">";
+					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' />";
+					html += "</div>";
+					$(".room_img_second").append(html);
+				} else {
+					var html = "<div ";
+					html += "class='room_img_etc'";
+					html += ">";
+					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' />";
+					html += "</div>";
+					$(".room_img_third").append(html);
 				}
-				html += ">";
-				html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' />";
-				html += "</div>";
-				$(".room_imgs").append(html);
+				
 				
 			}
 		});
@@ -220,6 +265,7 @@
 			
 		});
 	</script>
+	<script src="${pageContext.request.contextPath}/resources/js/pictureModal.js"></script>
 </c:if>
 
 <hr/>
