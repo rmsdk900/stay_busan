@@ -66,7 +66,7 @@
 	<div class="room">
 		<div >
 			<div class="room_imgs">
-				<div class='room_img_primary'></div>
+				<div class='room_img_primary' onclick="openSlide"></div>
 				<div class='room_img_second'></div>
 				<div class='room_img_third'></div>
 			</div>
@@ -224,20 +224,20 @@
 				
 				if(i == 0){
 					var html = "";
-					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' />";
+					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' onclick='openSlide("+i+")' />";
 					$(".room_img_primary").html(html);	
 				} else if(i==1 || i==2) {
 					var html = "<div ";
-					html += "class='room_img_etc'";
+					html += "class='room_img_etc' ";
 					html += ">";
-					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' />";
+					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' onclick='openSlide("+i+")' />";
 					html += "</div>";
 					$(".room_img_second").append(html);
 				} else {
 					var html = "<div ";
-					html += "class='room_img_etc'";
+					html += "class='room_img_etc' ";
 					html += ">";
-					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' />";
+					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' onclick='openSlide("+i+")' />";
 					html += "</div>";
 					$(".room_img_third").append(html);
 				}
@@ -245,6 +245,12 @@
 				
 			}
 		});
+		
+		function openSlide(i){
+			console.log(i);
+			$('#roomPicturesModal').modal('show');
+			$('.carousel').carousel(i);
+		}
 		
 		$.getJSON(contextPath+"/getHostImg/"+r_no, function(data){
 			
