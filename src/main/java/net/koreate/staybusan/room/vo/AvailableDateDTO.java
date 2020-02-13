@@ -5,9 +5,8 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class RoomClosedVO {
-	
+public class AvailableDateDTO {
 	private int r_no;
-	private Date closed_from;
-	private Date closed_to;
+	private Date r_date_from;
+	private Date r_date_to;
 }

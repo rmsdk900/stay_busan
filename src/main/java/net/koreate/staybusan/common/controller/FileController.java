@@ -72,7 +72,7 @@ public class FileController {
 	
 	@GetMapping("getGuestImg/{u_no}")
 	public List<String> getGuestImg(@PathVariable("u_no") int u_no)throws Exception{
-		System.out.println("사진 불러올 게스트 번호 : "+u_no);
+//		System.out.println("사진 불러올 게스트 번호 : "+u_no);
 		
 		return ris.getGuestImg(u_no);
 	}

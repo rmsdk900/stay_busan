@@ -9,12 +9,106 @@ var maxDate;
 
 var endMinDate;
 
+// 예약 가능 전체 날짜 보관 배열
+var availableDates = new Array();
+
 // 불가 날짜 보관 배열
 var banDates = new Array();
 
 // 불가 날짜 계산용 날짜
-var banStartDate;
-var banEndDate;
+//var banStartDate;
+//var banEndDate;
+
+// 추가로 안되는 날짜 불러오기
+$(function(){
+	$.getJSON(contextPath+"/getAvailableDate/"+r_no, function(data){
+//		console.log(data);
+		minDate = data.r_date_from;
+		maxDate = data.r_date_to;
+		
+		console.log(minDate+" vs "+maxDate);
+		
+	})
+	$.getJSON(contextPath+"/getBanDates/"+r_no, function(data){
+		
+//		console.log(data);
+		
+		$(data).each(function(){
+			var banStartDate = new Date(this.closed_from);
+			var banEndDate = new Date(this.closed_to);
+			banDateCalc(banStartDate, banEndDate);
+			console.log(banDates);
+		});
+	});
+});
+
+//불가 기간 계산
+function banDateCalc(banStartDate, banEndDate){
+ 
+ var calcDateNum = Math.ceil((banEndDate-banStartDate)/1000/3600/24);
+ 
+// console.log("금지 일 수 : "+calcDateNum);
+// console.log(banStartDate.getDate());
+ 
+ var yy = banStartDate.getFullYear();
+ var mm = banStartDate.getMonth();
+ var dd = banStartDate.getDate();
+ 
+ 
+ 
+ banDates.push(yy+"-"+(mm+1)+"-"+dd);
+ for(var i=0; i<calcDateNum; i++){
+    
+    
+    if(mm == 0 || mm == 2 || mm == 4 || mm == 6 || mm == 7 || mm == 9 || mm == 11){
+       if(dd>30){
+          dd = 1;
+          mm = mm+1;
+       }else{
+          dd = dd+1;
+       }
+    }else if(mm == 3 || mm == 5 || mm == 8 || mm == 10){
+       if(dd>29){
+          dd = 1;
+          mm = mm+1;
+       }else{
+          dd = dd+1;
+       }
+    }else{
+       if(yy%4 == 0){
+          if(dd>28){
+             dd = 1;
+             mm = mm+1;
+          }else{
+             dd = dd+1;
+          }
+       }else{
+          if(dd>27){
+             dd = 1;
+             mm = mm+1;
+          }else{
+             dd = dd+1;
+          }
+       }
+    }
+    
+    if(mm == 12){
+       yy = yy+1;
+       mm = 0;
+       dd = 1;
+    }
+    
+//    console.log("yy : "+yy);
+//    console.log("mm : "+mm);
+//    console.log("dd : "+dd);
+    
+    var calcDate = (yy+"-"+(mm+1)+"-"+dd);
+//    console.log(calcDate);
+    banDates.push(calcDate);
+ }
+ 
+}
+
 
 $("#startDate").datepicker({
     dateFormat : "yy-mm-dd",
@@ -49,6 +143,9 @@ $("#startDate").datepicker({
 //         startDatepicker();
       }
  });
+ 
+ 
+ 
  
  // ====================공사중=========================
  // 데이트픽커(함수)
@@ -168,72 +265,5 @@ $("#startDate").datepicker({
 //    var target = $(this);
 //    target.parent().remove();
 // });
-// 
-// // 불가 기간 계산
-// function banDateCalc(banStartDate, banEndDate){
-//    
-//    var calcDateNum = parseInt((banEndDate-banStartDate)/1000/3600/24);
-//    
-//    console.log(calcDateNum);
-//    console.log(banStartDate.getDate());
-//    
-//    var yy = banStartDate.getFullYear();
-//    var mm = banStartDate.getMonth();
-//    var dd = banStartDate.getDate();
-//    
-//    console.log(yy+mm+dd);
-//    
-//    banDates.push(yy+"-"+(mm+1)+"-"+dd);
-//    for(var i=0; i<calcDateNum; i++){
-//       
-//       
-//       if(mm == 0 || mm == 2 || mm == 4 || mm == 6 || mm == 7 || mm == 9 || mm == 11){
-//          if(dd>30){
-//             dd = 1;
-//             mm = mm+1;
-//          }else{
-//             dd = dd+1;
-//          }
-//       }else if(mm == 3 || mm == 5 || mm == 8 || mm == 10){
-//          if(dd>29){
-//             dd = 1;
-//             mm = mm+1;
-//          }else{
-//             dd = dd+1;
-//          }
-//       }else{
-//          if(yy%4 == 0){
-//             if(dd>28){
-//                dd = 1;
-//                mm = mm+1;
-//             }else{
-//                dd = dd+1;
-//             }
-//          }else{
-//             if(dd>27){
-//                dd = 1;
-//                mm = mm+1;
-//             }else{
-//                dd = dd+1;
-//             }
-//          }
-//       }
-//       
-//       if(mm == 12){
-//          yy = yy+1;
-//          mm = 0;
-//          dd = 1;
-//       }
-//       
-//       console.log("yy : "+yy);
-//       console.log("mm : "+mm);
-//       console.log("dd : "+dd);
-//       
-//       var calcDate = (yy+"-"+(mm+1)+"-"+dd);
-//       console.log(calcDate);
-//       banDates.push(calcDate);
-//    }
-//    console.log(banDates);
-// }
 
  

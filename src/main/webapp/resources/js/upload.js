@@ -13,7 +13,7 @@ function getFileInfo(fullName){
 	
 	if(checkImageType(fullName)){
 		// Image
-		console.log("contextPath : " + contextPath);
+//		console.log("contextPath : " + contextPath);
 		imgSrc = contextPath+"/displayFile?fileName="+fullName;
 		getLink = contextPath+"/displayFile?fileName="+fullName.replace("s_","");
 	}else{

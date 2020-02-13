@@ -139,7 +139,7 @@ public class FileUtils {
 	// ----------------공사 중-----------------------------------
 	
 	public byte[] displayFile(String fileName) throws IOException{
-		System.out.println("보여줄 fileName : "+fileName);
+//		System.out.println("보여줄 fileName : "+fileName);
 		
 		InputStream in = null;
 		String path = uploadPath+(fileName).replace('/', File.separatorChar);
@@ -163,9 +163,10 @@ public class FileUtils {
 		
 		MediaType mType = MediaUtils.getMediaType(formatName);
 		if(mType != null) {
-			System.out.println("IMAGE");
+//			System.out.println("IMAGE");
 			header.setContentType(mType);
 		}else {
+			System.out.println("IMAGE 파일 아님");
 			fileName = fileName.substring(fileName.indexOf("_")+1);
 			header.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 			header.add("content-disposition", "attachment;fileName=\""+new String(fileName.getBytes("utf-8"), "ISO-8859-1")+"\"");

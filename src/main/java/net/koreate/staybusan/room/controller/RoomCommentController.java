@@ -27,7 +27,7 @@ public class RoomCommentController {
 			@PathVariable("page") int page)throws Exception{
 		ResponseEntity<Map<String, Object>> entity = null;
 		
-		System.out.println("방 번호 확인 : "+r_no);
+//		System.out.println("방 번호 확인 : "+r_no);
 		
 		try {
 			Map<String, Object> map = cs.getCommentList(r_no, page);
