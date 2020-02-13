@@ -12,6 +12,9 @@ var banDates = new Array();
 
 // 추가로 안되는 날짜 불러오기
 $(function(){
+	$.getJSON(contextPath+"/getTestDate/"+r_no,function(data){
+		console.log(data);
+	})
 	$.getJSON(contextPath+"/getAvailableDate/"+r_no, function(data){
 		// data.closedDate : 금지 날짜
 		// data.availableDate : 되는 날짜.
@@ -111,6 +114,7 @@ function calcTotalPrice(nights){
 	var total_price = per_price * nights;
 	console.log("이 방 최종 가격 : "+total_price);
 	$(".room_reservation_price_real").html("￦"+total_price);
+	$("#b_total_price").val(total_price);
 }
 
 

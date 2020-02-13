@@ -6,9 +6,11 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.koreate.staybusan.room.dao.RoomDetailDAO;
 import net.koreate.staybusan.room.vo.AmenityVO;
+import net.koreate.staybusan.room.vo.BuyVO;
 import net.koreate.staybusan.room.vo.RoomVO;
 import net.koreate.staybusan.user.vo.UserVO;
 
@@ -38,6 +40,21 @@ public class RoomDetailServiceImpl implements RoomDetailService{
 		
 		return roomInfo;
 	}
+
+	
+	@Override
+	public boolean bookingRoom(BuyVO vo) throws Exception {
+		boolean isBooked = false;
+		
+		if(rdd.bookingRoom(vo)) {
+			isBooked = true;
+			rdd.updateGuest(vo.getR_no(), vo.getB_guest());
+		}
+		
+		return isBooked;
+	}
+	
+	
 
 	
 

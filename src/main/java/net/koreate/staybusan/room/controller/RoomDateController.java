@@ -81,4 +81,13 @@ public class RoomDateController {
 		return entity;
 	}
 	
+	@GetMapping("/getTestDate/{r_no}")
+	public ResponseEntity<List<String>> getTestDate(
+			@PathVariable("r_no") int r_no)throws Exception{
+		ResponseEntity<List<String>> entity = null;
+		
+		List<String> list = rbds.getTestDate(r_no);
+		
+		return entity;
+	}
 }

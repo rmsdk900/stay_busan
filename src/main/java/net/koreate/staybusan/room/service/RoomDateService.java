@@ -11,5 +11,7 @@ public interface RoomDateService {
 	List<RoomClosedVO> getBanDates(int r_no) throws Exception;
 	// 되는 날짜 가져오기
 	AvailableDateDTO getAvailableDate(int r_no) throws Exception;
+	// 테스트용 날짜 가져오기
+	List<String> getTestDate(int r_no)throws Exception;
 
 }

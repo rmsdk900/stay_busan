@@ -39,11 +39,19 @@
 		<constructor-arg ref="sqlSessionFactory"/>
 	</bean>
 	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="ds"/>
+	</bean>
+	
 	<mybatis-spring:scan base-package="net.koreate.staybusan.*.dao"/>
 	
 	<context:component-scan base-package="net.koreate.staybusan.common.task"></context:component-scan>
 	
 	<task:annotation-driven/>
+	
+	<tx:annotation-driven/>
+	
+	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 	
 		
 </beans>

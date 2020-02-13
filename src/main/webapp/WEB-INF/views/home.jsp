@@ -57,6 +57,15 @@
 	</div>
 	<script src="${pageContext.request.contextPath}/resources/js/upload.js"></script>
 	<script>
+		var message = '${message}';
+		console.log("예약 여부 확인 : "+message);
+		
+		if(message == 'y'){
+			alert("예약 성공!");
+		}else if(message=='n') {
+			alert("예약 실패!");
+		}
+		
 		$(".fileDrop").on("dragenter dragover",function(event){
 			event.preventDefault();
 		});

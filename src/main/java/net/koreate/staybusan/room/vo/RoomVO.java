@@ -17,6 +17,7 @@ public class RoomVO {
 	private String r_addr_main;
 	private String r_addr_detail;
 	private int r_guests;
+	private int r_guest_booked;
 	private int r_bath;
 	private int r_bedroom;
 	private int r_bed;

@@ -60,6 +60,14 @@
 		height: 100%;
 	}
 	
+	.room_reservation_people_danger{
+		display: none;
+	}
+	
+	.text_red{
+		color:red;
+	}
+	
 </style>
 <!-- roomInfo -->
 <c:if test="${!empty roomInfo}">
@@ -135,8 +143,11 @@
 					<p>방 설명 : ${roomInfo.roomVO.r_desc}</p>
 				</div>
 				<div>
-					<input type="button" value="호스트에게 질문"/>
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#messageModal" data-whatever="${roomInfo.hostVO.u_name}">
+						호스트에게 쪽지 보내기
+					</button>
 				</div>
+				
 			</div>
 			<hr/>
 			<div class="room_host_description">
@@ -164,9 +175,12 @@
 			</div>
 			<hr/>
 			<%@ include file="../comment/comment.jsp" %>
-			
+			<!-- 예약 폼 -->
 			<div class="room_reservation">
-				<form>
+				<form id="bookingForm" action="bookingRoom" method="post">
+					<input type="hidden" name="r_no" value="${roomInfo.roomVO.r_no}" />
+					<!-- 얘는 지금 호스트 번호로 구매를 하게 되어있지만 회원가입 로그인 구현 되면 로그인한 사람으로 바꿀 것! -->
+					<input type="hidden" name="u_no" value="${roomInfo.hostVO.u_no}" />
 					<div>
 						<div>
 							<span class="room_reservation_per_price">${roomInfo.roomVO.r_price}</span>
@@ -179,25 +193,26 @@
 					<div>
 						<div>날짜</div>
 						<div>
-							<input type="text" id="startDate" name="r_date_from" readonly>-<input type="text" id="endDate" name="r_date_to" readonly>
+							<input type="text" id="startDate" name="date_from_dummy" readonly>-<input type="text" id="endDate" name="date_to_dummy" readonly>
 						</div>
 					</div>
 					<div>
 						<div>인원</div>
-						<div>
-							<label><input type="number" name="b_guest" /> 명</label>	
+						<div class="room_reservation_people">
+							<label><input id="b_guest" type="number" name="b_guest" /> 명</label>
+							<div class="room_reservation_people_danger text_red"></div>	
 						</div>
 					</div>
 					<div class="room_reservation_price" style="display:none;">
 						<div>합계</div>
 						<div class="room_reservation_price_real">[총 가격]</div>
 					</div>
+					<input type="hidden" name="b_total_price" id="b_total_price" />
 					<div>
 						<input type="button" class="room_reservation_choose_date"value="날짜선택"/>
 						<input type="button" class="room_reservation_submit"value="예약하기" style="display:none;"/>
 					</div>
 				</form>
-				
 			</div>
 			<br/>
 			<div class="room_message">
@@ -213,7 +228,6 @@
 		
 	</div>
 	
-	
 	<script src="${pageContext.request.contextPath}/resources/js/comment.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/upload.js"></script>
 	<script>
@@ -221,7 +235,7 @@
 			// 첨부파일 목록 = data
 			/* console.log(data); */
 			
-			for(var i=0;i<5;i++){
+			for(var i=0;i<data.length;i++){
 				var fileInfo = getFileInfo(data[i]);
 				/* console.log(fileInfo); */
 				
@@ -236,13 +250,15 @@
 					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' onclick='openSlide("+i+")' />";
 					html += "</div>";
 					$(".room_img_second").append(html);
-				} else {
+				} else if(i==3 || i==4){
 					var html = "<div ";
 					html += "class='room_img_etc' ";
 					html += ">";
 					html += "<img src='"+fileInfo.imgSrc+"' alt='배경 사진"+(i+1)+"' class='FilledImg' onclick='openSlide("+i+")' />";
 					html += "</div>";
 					$(".room_img_third").append(html);
+				}else {
+					break;
 				}
 				
 				
@@ -276,23 +292,40 @@
 		
 		$.getJSON(contextPath+"/getHostImg/"+r_no, function(data){
 			
-			
 			var fileInfo = getFileInfo(data[0]);
 			/* console.log(fileInfo); */
 			var html = "<img src='"+fileInfo.imgSrc+"' alt='호스트 사진' class='FilledImg' />";
 			$(".room_host_img").append(html);
 			
-			
 		});
-	</script>
-	<script src="${pageContext.request.contextPath}/resources/js/pictureModal.js"></script>
-	<script>
+		
 		function openSlide(i){
 			console.log(i);
 			$('#roomPicturesModal').modal('show');
 			$('.carousel').carousel(i);
 		}
+		
+		$(".room_reservation_submit").on("click",function(){
+			var b_guest = $("#b_guest").val();
+			var total = ${roomInfo.roomVO.r_guests};
+			var booked = ${roomInfo.roomVO.r_guest_booked};
+			console.log("현재 숙박 가능 인원 : "+(total-booked));
+			if(b_guest === null || b_guest === ''){
+				$(".room_reservation_people_danger").html("숙박할 인원을 입력해주세요!");
+				$(".room_reservation_people_danger").show();
+				return;
+			}else if(b_guest > (total - booked)){
+				$(".room_reservation_people_danger").html("숙박 가능한 인원보다 많습니다!");
+				$(".room_reservation_people_danger").show();
+				return;
+			}else{
+				console.log("click");
+				$("#bookingForm").submit();
+			}
+			
+		});
 	</script>
+	<script src="${pageContext.request.contextPath}/resources/js/pictureModal.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/messageModal.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/detailDate.js"></script>
 </c:if>

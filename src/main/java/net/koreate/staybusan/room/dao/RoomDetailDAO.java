@@ -2,9 +2,12 @@ package net.koreate.staybusan.room.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import net.koreate.staybusan.room.vo.AmenityVO;
+import net.koreate.staybusan.room.vo.BuyVO;
 import net.koreate.staybusan.room.vo.RoomClosedVO;
 import net.koreate.staybusan.room.vo.RoomImgVO;
 import net.koreate.staybusan.room.vo.RoomVO;
@@ -31,4 +34,13 @@ public interface RoomDetailDAO {
 	// 호스트 정보 불러오기
 	@Select("SELECT * FROM user WHERE u_type!=0 AND u_no=(SELECT u_no FROM rooms WHERE r_no=#{r_no})")
 	UserVO getRoomOwner(int r_no)throws Exception;
+	
+	// 예약하기
+	@Insert("INSERT INTO buy (r_no, u_no, b_date_from, b_date_to, b_guest, b_total_price, b_status) "
+			+ " VALUES(#{r_no}, #{u_no}, #{b_date_from}, #{b_date_to}, #{b_guest}, #{b_total_price}, 1)")
+	boolean bookingRoom(BuyVO vo)throws Exception;
+	// 방 예약 및 숙박 중인 인원 수 업뎃.
+	@Update("UPDATE rooms SET r_guest_booked=r_guest_booked+#{b_guest} WHERE r_no=#{r_no}")
+	void updateGuest(int r_no, int b_guest)throws Exception;
+	
 }
