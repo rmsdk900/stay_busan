@@ -169,8 +169,8 @@
 				<form>
 					<div>
 						<div>
-							<span>${roomInfo.roomVO.r_price}</span>
-							<span>/박</span>
+							<span class="room_reservation_per_price">${roomInfo.roomVO.r_price}</span>
+							<span class="room_reservation_days">/ [0] 박</span>
 						</div>
 						<div class="room_reservation_star">[평균 평점]</div>
 						<div class="room_reservation_total">(후기 [후기 갯수]개)</div>
@@ -188,12 +188,13 @@
 							<label><input type="number" name="b_guest" /> 명</label>	
 						</div>
 					</div>
-					<div>
+					<div class="room_reservation_price" style="display:none;">
 						<div>합계</div>
-						<div>[총 가격]</div>
+						<div class="room_reservation_price_real">[총 가격]</div>
 					</div>
 					<div>
-						<input type="button" value="예약하기"/>
+						<input type="button" class="room_reservation_choose_date"value="날짜선택"/>
+						<input type="button" class="room_reservation_submit"value="예약하기" style="display:none;"/>
 					</div>
 				</form>
 				
@@ -246,13 +247,32 @@
 				
 				
 			}
+			
+			for(var i=0;i<data.length;i++){
+				var fileInfo = getFileInfo(data[i]);
+				/* console.log(fileInfo); */
+				
+				var olli = "";
+				olli += "<li data-target='#carousel-example-generic' " +
+						"data-slide-to='"+i+"' ";
+				if(i==0){
+					olli += "class='active' ";
+				}
+				olli +=	"></li>";
+				
+				var html = "<div class='item ";
+				if (i==0){
+					html += "active"; 
+				}
+				html += "' >";
+				html += "<img src='"+fileInfo.imgSrc+"' alt='"+(i+1)+"번째 사진' >";
+				html += "<div class='carousel-caption'>...</div>";
+				html += "</div>";
+				$(".carousel-indicators").append(olli);
+				$(".carousel-inner").append(html);
+				
+			}
 		});
-		
-		function openSlide(i){
-			console.log(i);
-			$('#roomPicturesModal').modal('show');
-			$('.carousel').carousel(i);
-		}
 		
 		$.getJSON(contextPath+"/getHostImg/"+r_no, function(data){
 			
@@ -266,6 +286,13 @@
 		});
 	</script>
 	<script src="${pageContext.request.contextPath}/resources/js/pictureModal.js"></script>
+	<script>
+		function openSlide(i){
+			console.log(i);
+			$('#roomPicturesModal').modal('show');
+			$('.carousel').carousel(i);
+		}
+	</script>
 	<script src="${pageContext.request.contextPath}/resources/js/messageModal.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/detailDate.js"></script>
 </c:if>

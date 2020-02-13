@@ -82,7 +82,7 @@
 			$.ajax({
 				type : "POST",
 				data : formData,
-				url : contextPath+"/uploadFile/"+1+"/"+1,
+				url : contextPath+"/uploadFile/"+1+"/"+2,
 				dataType : "json",
 				processData : false,
 				contentType : false,

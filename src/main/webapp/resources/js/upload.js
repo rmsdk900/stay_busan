@@ -13,12 +13,10 @@ function getFileInfo(fullName){
 	
 	if(checkImageType(fullName)){
 		// Image
-//		console.log("contextPath : " + contextPath);
 		imgSrc = contextPath+"/displayFile?fileName="+fullName;
 		getLink = contextPath+"/displayFile?fileName="+fullName.replace("s_","");
 	}else{
 		// 일반 파일
-		console.log("contextPath : " + contextPath);
 		imgSrc = contextPath+"/resources/img/file.png";
 		getLink = contextPath+"/displayFile?fileName="+fullName;
 	}

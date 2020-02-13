@@ -7,40 +7,112 @@ var minDate;
 // 최대 날짜
 var maxDate;
 
-var endMinDate;
-
-// 예약 가능 전체 날짜 보관 배열
-var availableDates = new Array();
-
 // 불가 날짜 보관 배열
 var banDates = new Array();
-
-// 불가 날짜 계산용 날짜
-//var banStartDate;
-//var banEndDate;
 
 // 추가로 안되는 날짜 불러오기
 $(function(){
 	$.getJSON(contextPath+"/getAvailableDate/"+r_no, function(data){
-//		console.log(data);
-		minDate = data.r_date_from;
-		maxDate = data.r_date_to;
+		// data.closedDate : 금지 날짜
+		// data.availableDate : 되는 날짜.
+		console.log(data);
 		
-		console.log(minDate+" vs "+maxDate);
+		minDate = new Date(data.availableDate.r_date_from);
+		maxDate = new Date(data.availableDate.r_date_to);
 		
-	})
-	$.getJSON(contextPath+"/getBanDates/"+r_no, function(data){
 		
-//		console.log(data);
-		
-		$(data).each(function(){
+		$(data.closedDate).each(function(){
 			var banStartDate = new Date(this.closed_from);
 			var banEndDate = new Date(this.closed_to);
 			banDateCalc(banStartDate, banEndDate);
 			console.log(banDates);
 		});
-	});
+		
+		
+		$("#startDate").datepicker({
+		    dateFormat : "yy-mm-dd",
+		    minDate : minDate,
+		    todayHighlight : true,
+		    changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
+		    changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다.
+		    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		      monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		      dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+		      dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+		      dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+		      beforeShowDay : disableAllTheseDays,
+		    onSelect : function(dateText, inst) {
+		       minDate = new Date(dateText);
+		       $("#endDate").datepicker("option","minDate",minDate);
+		       $(".endDate").focus();
+		    }
+		 });
+		
+		 $("#endDate").datepicker({
+		    dateFormat : "yy-mm-dd",
+		    changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
+		    changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다.
+		    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		      monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		      dayNames: ['일', '월', '화', '수', '목', '금', '토'],
+		      dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
+		      dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+		      beforeShowDay : disableAllTheseDays,
+		      onSelect : function(dateText, inst){
+		    	 
+		         maxDate = new Date(dateText);
+		         
+		         console.log(minDate);
+		         console.log(maxDate);
+		         
+		         showNights(minDate, maxDate);
+		         
+		         $(".endDate").focus();
+		         
+		      }
+		 });
+		 
+		// 불가 기간 추가
+		 function disableAllTheseDays(date){
+		    var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
+		    for(i=0; i<banDates.length; i++){
+		       if($.inArray(y+ "-" + (m+1) + "-" + d, banDates) != -1){
+		          return [false];
+		       }
+		    }
+		    return [true];
+		 }
+		
+	})
+	
 });
+
+// 숙박 일자 표시
+function showNights(start, end){
+	var nights = 0;
+	
+	var startDay = start.getDate();
+	var endDay = end.getDate();
+	
+	nights = endDay - startDay;
+	
+	$(".room_reservation_days").html("/ "+nights+" 박");
+	$(".room_reservation_choose_date").hide();
+	calcTotalPrice(nights);
+	$(".room_reservation_price").show();
+	$(".room_reservation_submit").show();
+	
+	
+}
+// 최종 가격 계산
+function calcTotalPrice(nights){
+	var per_price = $(".room_reservation_per_price").html();
+	console.log("이 방 하루 당 가격 : "+per_price);
+	var total_price = per_price * nights;
+	console.log("이 방 최종 가격 : "+total_price);
+	$(".room_reservation_price_real").html("￦"+total_price);
+}
+
 
 //불가 기간 계산
 function banDateCalc(banStartDate, banEndDate){
@@ -109,161 +181,14 @@ function banDateCalc(banStartDate, banEndDate){
  
 }
 
+$(".room_reservation_choose_date").on("click", function(){
+	$("#startDate").datepicker('show');
+});
 
-$("#startDate").datepicker({
-    dateFormat : "yy-mm-dd",
-    minDate : 0,
-    todayHighlight : true,
-    changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
-    changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다.
-    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-      monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-      dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-      dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-      dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-    onSelect : function(dateText, inst) {
-       minDate = new Date(dateText);
-       $("#endDate").datepicker("option","minDate",minDate);
-       $(".endDate").focus();
-    }
- });
 
- $("#endDate").datepicker({
-    dateFormat : "yy-mm-dd",
-    changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
-    changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다.
-    monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-      monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-      dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-      dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-      dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-      onSelect : function(dateText, inst){
-         maxDate = new Date(dateText);
-         $(".endDate").focus();
-//         startDatepicker();
-      }
- });
  
  
  
  
- // ====================공사중=========================
- // 데이트픽커(함수)
-// function startDatepicker(){
-//    $(".banStartDate").datepicker({
-//       dateFormat : "yy-mm-dd",
-//       minDate : minDate,
-//       maxDate : maxDate,
-//       todayHighlight : true,
-//       changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
-//       changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다.
-//       monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//         monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//         dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-//         dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-//         dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-//       onSelect : function(dateText, inst) {
-//          endMinDate = new Date(dateText);
-//          banStartDate = new Date(dateText);
-//          endDatepicker();
-//          $(".endDate").focus();
-//       }
-//    });
-// }
-//
-// function endDatepicker(){
-//    $(".banEndDate").datepicker({
-//       dateFormat : "yy-mm-dd",
-//       minDate : endMinDate,
-//       maxDate : maxDate,
-//       changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
-//       changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다.
-//       monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//         monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//         dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-//         dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-//         dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-//         onSelect : function(dateText, inst){
-//            banEndDate = new Date(dateText);
-//            console.log(banEndDate);
-//            banDateCalc(banStartDate, banEndDate);
-//            $(".endDate").focus();
-//         }
-//    });
-// };
-// 
-// 
-// // 추가 데이트픽커
-// function addStartDatepicker(){
-//    $(".addBanStartDate").datepicker({
-//       dateFormat : "yy-mm-dd",
-//       minDate : minDate,
-//       maxDate : maxDate,
-//       todayHighlight : true,
-//       changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
-//       changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다.
-//       monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//         monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//         dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-//         dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-//         dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-//         beforeShowDay : disableAllTheseDays,
-//       onSelect : function(dateText, inst) {
-//          endMinDate = new Date(dateText);
-//          banStartDate = new Date(dateText);
-//          addEndDatepicker();
-//          $(".endDate").focus();
-//       }
-//    });
-// }
-//
-// function addEndDatepicker(){
-//    $(".addBanEndDate").datepicker({
-//       dateFormat : "yy-mm-dd",
-//       minDate : endMinDate,
-//       maxDate : maxDate,
-//       changeMonth: true, // 월을 바꿀수 있는 셀렉트 박스를 표시한다.
-//       changeYear: true, // 년을 바꿀 수 있는 셀렉트 박스를 표시한다.
-//       monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//         monthNamesShort: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
-//         dayNames: ['일', '월', '화', '수', '목', '금', '토'],
-//         dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
-//         dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
-//         beforeShowDay : disableAllTheseDays,
-//         onSelect : function(dateText, inst){
-//            banEndDate = new Date(dateText);
-//            console.log(banEndDate);
-//            banDateCalc(banStartDate, banEndDate);
-//            $(".endDate").focus();
-//         }
-//    });
-// };
-// 
-// // 불가 기간 추가
-// function disableAllTheseDays(date){
-//    var m = date.getMonth(), d = date.getDate(), y = date.getFullYear();
-//    for(i=0; i<banDates.length; i++){
-//       if($.inArray(y+ "-" + (m+1) + "-" + d, banDates) != -1){
-//          return [false];
-//       }
-//    }
-//    return [true];
-// }
-// 
-// // 추가 버튼 클릭
-// $("#banDateAdd").click(function(){
-//    var html = "";
-//    html += "<div>";
-//    html += "<input type='text' class='addBanStartDate' readonly>-<input type'text' class='addBanEndDate' readonly/><input type='button' class='banCancel' value='x'/>"
-//    html += "</div>";
-//    $("#banDate").append(html);
-//    addStartDatepicker();
-// });
-// 
-// // x버튼 클릭
-// $("#banDate").on("click",".banCancel",function(){
-//    var target = $(this);
-//    target.parent().remove();
-// });
-
+ 
  
