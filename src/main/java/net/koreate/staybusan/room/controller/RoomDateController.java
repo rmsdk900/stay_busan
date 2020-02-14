@@ -22,42 +22,6 @@ public class RoomDateController {
 	@Inject
 	RoomDateService rbds;
 	
-//	@GetMapping("/getBanDates/{r_no}")
-//	public ResponseEntity<List<RoomClosedVO>> getBanDates(@PathVariable("r_no") int r_no)throws Exception{
-//		ResponseEntity<List<RoomClosedVO>> entity = null;
-//		
-////		System.out.println("금지 날짜 받아올 방 번호 확인 : "+r_no);
-//		
-//		try {
-//			List<RoomClosedVO> list = rbds.getBanDates(r_no);
-////		System.out.println(list);
-//			entity = new ResponseEntity<>(list, HttpStatus.OK);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
-//		
-//		return entity;
-//		
-//	}
-	
-//	@GetMapping("/getAvailableDate/{r_no}")
-//	public ResponseEntity<AvailableDateDTO> getAvailableDate(
-//			@PathVariable("r_no") int r_no)throws Exception{
-//		ResponseEntity<AvailableDateDTO> entity = null;
-//		
-//		try {
-//			AvailableDateDTO dto = rbds.getAvailableDate(r_no);
-////		System.out.println(dto);
-//			entity = new ResponseEntity<>(dto, HttpStatus.OK);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//		}
-//		
-//		return entity;
-//	}
-	
 	@GetMapping("/getAvailableDate/{r_no}")
 	public ResponseEntity<Map<String, Object>> getAvailableDate(
 			@PathVariable("r_no") int r_no)throws Exception{

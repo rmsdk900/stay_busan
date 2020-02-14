@@ -39,8 +39,5 @@ public interface RoomDetailDAO {
 	@Insert("INSERT INTO buy (r_no, u_no, b_date_from, b_date_to, b_guest, b_total_price, b_status) "
 			+ " VALUES(#{r_no}, #{u_no}, #{b_date_from}, #{b_date_to}, #{b_guest}, #{b_total_price}, 1)")
 	boolean bookingRoom(BuyVO vo)throws Exception;
-	// 방 예약 및 숙박 중인 인원 수 업뎃.
-	@Update("UPDATE rooms SET r_guest_booked=r_guest_booked+#{b_guest} WHERE r_no=#{r_no}")
-	void updateGuest(int r_no, int b_guest)throws Exception;
 	
 }

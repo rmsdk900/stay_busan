@@ -26,10 +26,10 @@ public class RoomDateServiceImpl implements RoomDateService{
 	@Inject
 	RoomDateDAO dao;
 	
-	@Override
-	public List<RoomClosedVO> getBanDates(int r_no) throws Exception {
-		return dao.getBanDates(r_no);
-	}
+//	@Override
+//	public List<RoomClosedVO> getBanDates(int r_no) throws Exception {
+//		return dao.getBanDates(r_no);
+//	}
 
 	@Override
 	public AvailableDateDTO getAvailableDate(int r_no) throws Exception {

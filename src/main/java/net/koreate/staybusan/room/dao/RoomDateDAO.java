@@ -33,7 +33,7 @@ public interface RoomDateDAO {
 	TotalBookedDateDTO getTotalBookedDates(int r_no) throws Exception;
 	
 	@Select("SELECT * FROM rooms WHERE r_no=#{r_no} AND r_guests <= "+ 
-			" (SELECT sum(b_guest) as sum_guests FROM buy WHERE r_no=#{r_no} AND b_date_from<=#{date} AND b_date_to>=#{date})")
+			" (SELECT sum(b_guest) as sum_guests FROM buy WHERE r_no=#{r_no} AND b_status=1 AND b_date_from<=#{date} AND b_date_to>#{date})")
 	RoomVO isFullDate(@Param("r_no") int r_no,@Param("date") String date);
 
 	

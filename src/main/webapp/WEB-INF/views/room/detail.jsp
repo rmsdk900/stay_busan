@@ -60,12 +60,16 @@
 		height: 100%;
 	}
 	
-	.room_reservation_people_danger{
+	.room_reservation_people_message{
 		display: none;
 	}
 	
 	.text_red{
 		color:red;
+	}
+	
+	.text_green{
+		color:green;
 	}
 	
 </style>
@@ -194,13 +198,19 @@
 						<div>날짜</div>
 						<div>
 							<input type="text" id="startDate" name="date_from_dummy" readonly>-<input type="text" id="endDate" name="date_to_dummy" readonly>
+							<div class="room_reservation_how_many"> 숙박 중 : 
+								<span class="room_reservation_how_many_people">0</span>
+								 / 
+								<span class="room_reservation_how_many_total">${roomInfo.roomVO.r_guests}</span>
+								 명
+							</div>
 						</div>
 					</div>
 					<div>
 						<div>인원</div>
 						<div class="room_reservation_people">
-							<label><input id="b_guest" type="number" name="b_guest" /> 명</label>
-							<div class="room_reservation_people_danger text_red"></div>	
+							<label><input id="b_guest" type="number" name="b_guest" min="0" max="${roomInfo.roomVO.r_guests}" step="1"/> 명</label>
+							<div class="room_reservation_people_message "></div>	
 						</div>
 					</div>
 					<div class="room_reservation_price" style="display:none;">
@@ -304,24 +314,125 @@
 			$('#roomPicturesModal').modal('show');
 			$('.carousel').carousel(i);
 		}
+		// 공사하자 인원 입력시 안되게 하는 건
+		
+		$("#b_guest").on("input", function(){
+			var cnt = $(this).val();
+			if (cnt != null && cnt != ''){
+				cnt = parseInt(cnt);
+				var booked = parseInt($(".room_reservation_how_many_people").html());
+				var total = parseInt($(".room_reservation_how_many_total").html());
+				console.log("입력 인원 : "+cnt);
+				console.log("예약 및 숙박 인원 : "+booked);
+				/* console.log("총 숙박 가능 인원 : "+total); */
+				/* console.log("입력 인원 형식 : "+typeof cnt); */
+				console.log("넣으려는 인원 : "+(cnt+booked));
+				
+				
+				if(total < (cnt+booked)){
+					var message = "<span>최대 숙박 가능한 인원을 초과했습니다.</span>";
+					
+					$(".room_reservation_people_message").addClass("text_red");
+					if($(".room_reservation_people_message").hasClass("text_green")){
+						$(".room_reservation_people_message").removeClass("text_green");
+					}
+					$(".room_reservation_people_message").html(message);	
+					$(".room_reservation_people_message").show("slow");	
+					
+					$(".room_reservation_choose_date").show("slow");
+					$(".room_reservation_price").hide("slow");
+					$(".room_reservation_submit").hide("slow");
+					$(".room_reservation_submit").attr("disabled", true);
+				}else if(cnt == 0){
+					var message = "<span>0명은 입력할 수 없습니다.</span>";
+					$(".room_reservation_people_message").addClass("text_red");
+					if($(".room_reservation_people_message").hasClass("text_green")){
+						$(".room_reservation_people_message").removeClass("text_green");
+					}
+					$(".room_reservation_people_message").html(message);	
+					$(".room_reservation_people_message").show("slow");		
+					
+					$(".room_reservation_choose_date").show("slow");
+					$(".room_reservation_price").hide("slow");
+					$(".room_reservation_submit").hide("slow");
+					$(".room_reservation_submit").attr("disabled", true);
+				}else if(cnt < 0){
+					var message = "<span>0명 이하는 입력할 수 없습니다.</span>";
+					$(".room_reservation_people_message").addClass("text_red");
+					if($(".room_reservation_people_message").hasClass("text_green")){
+						$(".room_reservation_people_message").removeClass("text_green");
+					}
+					$(".room_reservation_people_message").html(message);	
+					$(".room_reservation_people_message").show("slow");		
+					
+					$(".room_reservation_choose_date").show("slow");
+					$(".room_reservation_price").hide("slow");
+					$(".room_reservation_submit").hide("slow");
+					$(".room_reservation_submit").attr("disabled", true);
+				}else {
+					var message = "<span>예약 가능합니다.</span>";
+					$(".room_reservation_people_message").addClass("text_green");
+					if($(".room_reservation_people_message").hasClass("text_red")){
+						$(".room_reservation_people_message").removeClass("text_red");
+					}
+					$(".room_reservation_people_message").html(message);	
+					$(".room_reservation_people_message").show("slow");
+					
+					// 총 금액 계산하기
+					calcTotalPrice(cnt);
+					// 버튼 바꾸기 
+					$(".room_reservation_choose_date").hide();
+					$(".room_reservation_price").show("slow");
+					$(".room_reservation_submit").show("slow");
+					$(".room_reservation_submit").attr("disabled", false);
+					
+				}
+			}else {
+				$(".room_reservation_people_message").hide("slow");
+				
+				$(".room_reservation_choose_date").show("slow");
+				$(".room_reservation_price").hide("slow");
+				$(".room_reservation_submit").hide("slow");
+				$(".room_reservation_submit").attr("disabled", true);
+			}
+			
+		});
+		
+		function calcTotalPrice(cnt){
+			var per_price = $(".room_reservation_per_price").html();
+			var nights = $(".room_reservation_days span").html();
+			var total_price = per_price*nights*cnt;
+			console.log("이 방 최종 가격 : "+total_price);
+			$(".room_reservation_price_real").html("￦"+total_price);
+			$("#b_total_price").val(total_price);
+		}
 		
 		$(".room_reservation_submit").on("click",function(){
 			var b_guest = $("#b_guest").val();
-			var total = ${roomInfo.roomVO.r_guests};
-			var booked = ${roomInfo.roomVO.r_guest_booked};
-			console.log("현재 숙박 가능 인원 : "+(total-booked));
-			if(b_guest === null || b_guest === ''){
-				$(".room_reservation_people_danger").html("숙박할 인원을 입력해주세요!");
-				$(".room_reservation_people_danger").show();
+			var date_from = $("#startDate").val();
+			var date_to = $("#endDate").val();
+			var total_price = $("#b_total_price").val();
+			
+			if(date_from == null || date_from == ''){
+				alert("숙박 시작 날짜를 입력해주세요!");
+				$("#startDate").focus();
 				return;
-			}else if(b_guest > (total - booked)){
-				$(".room_reservation_people_danger").html("숙박 가능한 인원보다 많습니다!");
-				$(".room_reservation_people_danger").show();
-				return;
-			}else{
-				console.log("click");
-				$("#bookingForm").submit();
 			}
+			if(date_to == null || date_to == ''){
+				alert("숙박 종료  날짜를 입력해주세요!");
+				$("#endDate").focus();
+				return;
+			}
+			if(b_guest == null || b_guest == ''){
+				alert("숙박 인원을 입력해주세요!");
+				$("#b_guest").focus();
+				return;
+			}
+			if(total_price == null || total_price == ''){
+				return;
+			}
+			
+			$("#bookingForm").submit();
 			
 		});
 	</script>

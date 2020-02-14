@@ -48,7 +48,6 @@ public class RoomDetailServiceImpl implements RoomDetailService{
 		
 		if(rdd.bookingRoom(vo)) {
 			isBooked = true;
-			rdd.updateGuest(vo.getR_no(), vo.getB_guest());
 		}
 		
 		return isBooked;
