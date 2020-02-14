@@ -42,7 +42,7 @@ function getCommentList(page){
 // 게스트 이미지 불러오기
 function getGuestImg(u_no){
 	$.getJSON(contextPath+"/getGuestImg/"+u_no, function(data){
-		console.log(data);
+//		console.log(data);
 		
 		var fileInfo = getFileInfo(data[0]);
 		var html = "<img src='"+fileInfo.imgSrc+"' alt='게스트 사진' class='FilledImg' />";

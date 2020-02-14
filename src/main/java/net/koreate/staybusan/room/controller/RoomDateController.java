@@ -67,7 +67,7 @@ public class RoomDateController {
 		
 		try {
 			AvailableDateDTO dto = rbds.getAvailableDate(r_no);
-			List<RoomClosedVO> list = rbds.getBanDates(r_no);
+			List<String> list = rbds.getTestDate(r_no);
 			map.put("availableDate", dto);
 			map.put("closedDate", list);
 			
@@ -86,7 +86,15 @@ public class RoomDateController {
 			@PathVariable("r_no") int r_no)throws Exception{
 		ResponseEntity<List<String>> entity = null;
 		
-		List<String> list = rbds.getTestDate(r_no);
+		try {
+			List<String> list = rbds.getTestDate(r_no);
+//		System.out.println(list);
+			entity = new ResponseEntity<>(list, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
 		
 		return entity;
 	}
