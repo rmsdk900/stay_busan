@@ -44,6 +44,10 @@
 		<input type="text" name="r_no" />
 		<input type="submit" value="번 글 상세보기"/>
 	</form>
+	<form action="${pageContext.request.contextPath}/user/show" method="get">
+		<input type="text" name="u_no"/>
+		<input type="submit" value="번 유저 마이페이지 이동" />
+	</form>
 	<div>
 		<label>File Drop Here</label>
 		<div class="fileDrop">
