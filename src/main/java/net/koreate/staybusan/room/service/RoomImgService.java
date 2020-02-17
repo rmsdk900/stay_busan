@@ -18,4 +18,6 @@ public interface RoomImgService {
 	// 게스트 사진 불러오기
 	List<String> getGuestImg(int u_no) throws Exception;
 
+	
+
 }

@@ -31,13 +31,25 @@ public class RoomCommentServiceImpl implements RoomCommentService{
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(dao.totalCommentCnt(r_no));
 		
+		
+		
 		List<CommentVO> list = dao.commentList(r_no, cri);
 		
-		float star_avg = dao.getStarAvg(r_no);
 		
-		map.put("commentList", list);
-		map.put("pageMaker", pageMaker);
-		map.put("star_avg", star_avg);
+		
+		if(list != null && list.size() > 0) {
+			map.put("commentList", list);
+			map.put("pageMaker", pageMaker);
+			Float star_avg = dao.getStarAvg(r_no);
+			if(star_avg != null) {
+				map.put("star_avg", star_avg);
+				
+			}
+		}
+		
+		
+		
+		
 		
 		return map;
 	}

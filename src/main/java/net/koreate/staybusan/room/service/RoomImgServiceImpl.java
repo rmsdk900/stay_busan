@@ -36,6 +36,9 @@ public class RoomImgServiceImpl implements RoomImgService{
 	public List<String> getGuestImg(int u_no) throws Exception {
 		return dao.getGuestImg(u_no);
 	}
+
+	
+	
 	
 	
 	

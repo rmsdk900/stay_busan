@@ -1,6 +1,7 @@
 package net.koreate.staybusan.room.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -27,6 +28,8 @@ public class RoomVO {
 	
 	private Float r_star;
 	private int r_bookedcnt;
+	
+	private List<String> imgList;
 	
 	private Float popular;
 }

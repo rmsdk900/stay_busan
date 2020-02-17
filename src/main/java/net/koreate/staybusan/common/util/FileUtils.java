@@ -149,6 +149,7 @@ public class FileUtils {
 			bytes = IOUtils.toByteArray(in);
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("File이 없음 : "+e.getMessage());
 		} finally {
 			in.close();
 		}

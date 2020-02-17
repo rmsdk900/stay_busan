@@ -1,6 +1,7 @@
 desc user;
 
 
+
 SELECT * FROM room_img;
 
 DELETE FROM room_img;
@@ -47,6 +48,17 @@ select * from buy where r_no=1 and b_status = 1;
 
 --r_guest_booked 삭제
 ALTER TABLE rooms DROP r_guest_booked;
+
+
+
+-- 유저!!
+select * from user;
+
+select * from comment;
+
+desc comment;
+
+desc amenity;
 
 
 

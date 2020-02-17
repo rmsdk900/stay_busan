@@ -17,14 +17,14 @@ public interface RoomCommentDAO {
 	
 	// 불러온다. 후기들
 	@Select("SELECT * FROM comment "
-			+ " WHERE r_no=#{r_no} "
+			+ " WHERE r_no=#{r_no}"
 			+ " ORDER BY c_origin DESC, c_seq ASC"
 			+ " LIMIT #{cri.pageStart}, #{cri.perPageNum}")
 	List<CommentVO> commentList(@Param("r_no") int r_no,@Param("cri") Criteria cri) throws Exception;
 
 	// 평균 평점 구하기
-	@Select("SELECT avg(c_star) FROM comment WHERE r_no=#{r_no}")
-	float getStarAvg(int r_no)throws Exception;
+	@Select("SELECT avg(c_star) FROM comment WHERE r_no=#{r_no} AND c_dep=0")
+	Float getStarAvg(int r_no)throws Exception;
 	
 	
 }
