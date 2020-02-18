@@ -78,7 +78,7 @@
 
 	
 	<!-- 후기들 -->
-	<%@ include file="../comment/comment.jsp" %>
+	<%@ include file="../comment/comment_host.jsp" %>
 </div>
 <script>
 	var u_no = '${myAllInfo.userVO.u_no}';

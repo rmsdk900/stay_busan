@@ -16,6 +16,13 @@ function getCommentList(page){
 		
 		var str = "";
 		$(data.commentList).each(function(){
+			if(this.c_dep != 0){
+				str += "<div>";
+				for(var i=1; i<=this.c_dep;i++){
+					str += "&nbsp;&nbsp;&nbsp;";
+				}
+				str += "호스트의 댓글</div>";
+			}
 			str += "<div>";
 			str += "	<div>";
 			str += this.u_name;
@@ -30,6 +37,8 @@ function getCommentList(page){
 			str += this.c_content;
 			str += "	</div>";
 			str += "</div>";
+			
+			
 			str += "<hr/>";
 		});
 		$(".room_comments_list").html(str);

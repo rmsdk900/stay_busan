@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import net.koreate.mvc.common.util.Criteria;
 import net.koreate.mvc.common.util.PageMaker;
@@ -31,11 +32,7 @@ public class RoomCommentServiceImpl implements RoomCommentService{
 		pageMaker.setCri(cri);
 		pageMaker.setTotalCount(dao.totalCommentCnt(r_no));
 		
-		
-		
 		List<CommentVO> list = dao.commentList(r_no, cri);
-		
-		
 		
 		if(list != null && list.size() > 0) {
 			map.put("commentList", list);
@@ -47,11 +44,32 @@ public class RoomCommentServiceImpl implements RoomCommentService{
 			}
 		}
 		
-		
-		
-		
-		
 		return map;
 	}
+
+	@Transactional
+	@Override
+	public String addReply(CommentVO vo) throws Exception {
+		String message=null;
+		
+		// 기존 글 seq 값 수정
+		dao.updateOriginalSeq(vo);
+		
+		// 넣을 값들로 수정
+		vo.setC_dep(vo.getC_dep()+1);
+		vo.setC_seq(vo.getC_seq()+1);
+		
+		System.out.println("등록될 대댓글 정보 : "+vo);
+		
+		if(dao.addReply(vo)) {
+			message = "대댓글 등록 성공!";
+		}else {
+			message = "대댓글 등록 실패...";
+		}
+		
+		return message;
+	}
+	
+	
 	
 }

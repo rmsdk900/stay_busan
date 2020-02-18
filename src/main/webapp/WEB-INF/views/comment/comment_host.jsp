@@ -20,7 +20,7 @@
 		<div class="room_comments_total">[총 후기 갯수] 후기</div>
 	</div>
 	<hr/>
-	<div class="room_comments_list" >
+	<div class="room_comments_list panel-group" id="accordion" role="tablist" aria-multiselectable="true" >
 		
 	</div>
 	
@@ -29,4 +29,3 @@
 	</div>
 	<hr/>
 </div>
-

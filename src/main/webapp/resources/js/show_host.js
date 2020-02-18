@@ -14,41 +14,50 @@ $(function(){
 // content
 var content='';
 // content 정보 가져오기
-$(".room_comments_list").on('input', ".answer_content", function(){
-//	console.log($(this).val().length);
-	if($(this).val().length>0){
-//		content = $(this).val();
-		content = $(this);
-	}
-	
-	console.log(content);
+$(".room_comments_list").on("input", ".answer_content", function(){
+	content = $(this).val();
+});
+
+$(".room_comments_list").on("click",".collapsed",function(){
+	$(".room_comments_list").find(".answer_content").val("");
 });
 
 // 대댓글 달기
 $(".room_comments_list").on('click', ".btnReply", function(){
 	var u_no = $(this).attr("data-uno");
+	var r_no = $(this).attr("data-rno");
 	var u_name = $(this).attr("data-name");
 	var c_origin = $(this).attr("data-origin");
 	var c_dep = $(this).attr("data-dep");
 	var c_seq = $(this).attr("data-seq");
+	var c_content = content;	
 	
-//	var c_content = $(this).closest(".answer_content").val();
-	
-//	var contentt = $(this).closest("textarea");
-	
-	
-	console.log(u_no);
-	console.log(u_name);
-	console.log(c_origin);
-	console.log(c_dep);
-	console.log(c_seq);
-	
-//	console.log(contentt);
-//	console.log(content);
+//	console.log(u_no);
+//	console.log(r_no);
+//	console.log(u_name);
+//	console.log(c_origin);
+//	console.log(c_dep);
+//	console.log(c_seq);
 //	console.log(c_content);
 	
-//	$('#answer'+c_origin).collapse('hide');
+	$.post(contextPath+"/comments/reply", {
+		u_no: u_no,
+		r_no: r_no,
+		u_name: u_name,
+		c_origin: c_origin,
+		c_dep: c_dep,
+		c_seq: c_seq,
+		c_content: c_content
+	}, function(data){
+		alert(data);
+		$("#collapse"+c_origin).collapse('hide');
+		
+	});
 	
+});
+
+$("#collapse1").on('hidden.bs.collapse', function(){
+	console.log($(this));
 });
 
 $(".btnReview").on("click",function(){
@@ -64,58 +73,63 @@ $(".btnReview").on("click",function(){
 			// data.pageMaker = PageMaker
 			// data.star_avg = 평균 평점
 //			console.log(Object.keys(data).length);
+			
+			console.log(data.commentList);
 			if(Object.keys(data).length > 0 ){
 				var str = "";
 				$(data.commentList).each(function(){
-					str += "<div>";
-					str += "	<div>";
+					
+					str += "<div class='panel panel-default'>";
+					str += "	<div class='panel-heading' role='tab' id='heading"+this.c_no+"'>";
+					str += "		<h4 class='panel-title'>";
 					str += this.u_name;
-					str += "	</div>";
-					str += "	<div class='room_comment_profile' >";
+					str += "		</h4>";	
+					str += "		<div class='room_comment_profile' >";
 					str += getGuestImg(this.u_no);
-					str += "	</div>";
-					str += "	<div>";
+					str += "		</div>";
+					str += "		<div>";
 					str += getDate(this.c_regdate);
-					str += "	</div>";
-					str += "	<div>";
+					str += "		</div>";
+					str += "		<div>";
+					str += "			<span>";
 					str += this.c_content;
+					str += "			</span>";
+					str += "		</div>";
+					str += "		<a ";
+					str += " data-toggle='collapse' data-parent='#accordion' href='#collapse"+this.c_no+"' ";
+					str += " aria-expanded='true' aria-controls='collapse"+this.c_no+"' ";
+					str += " >";
+					str += "댓글"
+					str += "		</a>";
 					str += "	</div>";
-					str += "</div>";
-					str += "<div>";
-					str += "	<div>";
-					str += "		<input type='button' value='댓글 달기' class='btn btn-primary' ";
-					str += "		data-toggle='collapse' data-target='#answer"+this.c_no+"' ";
-					str += "		aria-expanded='false' aria-controls='answer"+this.c_no+"' ";
-					str += "		/>";
-					str += "	</div>";
+					str += "	<div id='collapse"+this.c_no+"' class='panel-collapse collapse' ";
+					str += " role='tabpanel' aria-labelledby='heading"+this.c_no+"' ";
+					str += " >";
+					str += "		<div class='panel-body'>";
 					
-					
-					str += "	<div class='collapse' id='answer"+this.c_no+"'>";
-					str += "		<br/>";
-					str += "		<div class='well'>";
-					str += "			<div class='answer_to'>";
-					str += "				<span>"
-					str += 						this.u_name;		
-					str +="					</span>";
-					str += "				<span> 에게</span>";
+					str += "			<div class='answer-to'>";
+					str += "				<span>";
+					str += this.u_name;
+					str += "				</span>";
+					str += "				<span>&nbsp;에게</span>";
 					str += "			</div>";
 					
-					str += "			<div class='answer_content'>";
-					str += "				<textarea name='c_content' class='answer_content' ></textarea>";
+					str += "			<div class='answer-content'>";
+					str += "				<textarea name='c_content' class='answer_content'></textarea>";
 					str += "			</div>";
 					
 					str += "			<div>";
-					str += "				<input type='button' value='등록' class='btnReply' data-uno='"+login+"' " +
-							"				data-origin='"+this.c_origin+"' data-dep='"+this.c_dep+"' " +
-									"				data-seq='"+this.c_seq+"' data-name='"+this.u_name+"' />";
+					str += "				<input type='button' value='등록' class='btnReply' ";
+					str += "				data-uno='"+login+"' data-origin='"+this.c_origin+"' ";
+					str += "				data-dep='"+this.c_dep+"' data-seq='"+this.c_seq+"' ";
+					str += "				data-name='"+this.u_name+"' data-rno='"+this.r_no+"' />";
 					str += "			</div>";
 					
 					str += "		</div>";
 					str += "	</div>";
-					
-					
 					str += "</div>";
-					str += "<hr/>";
+					
+					
 					
 				});
 				$(".room_comments_list").html(str);
@@ -144,8 +158,6 @@ $(".btnReview").on("click",function(){
 			var fileInfo = getFileInfo(data[0]);
 			var html = "<img src='"+fileInfo.imgSrc+"' alt='게스트 사진' class='FilledImg' />";
 			$(".room_comment_profile").html(html);
-			
-			
 			
 		});
 	}
