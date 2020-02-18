@@ -60,6 +60,10 @@ desc comment;
 
 desc amenity;
 
+SELECT * FROM rooms;
+
+
+
 
 
 

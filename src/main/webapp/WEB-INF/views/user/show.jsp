@@ -73,12 +73,13 @@
 		</c:when>
 		<c:otherwise>
 			<%@ include file="./showHostRooms.jsp" %>
+			<%@ include file="../comment/comment_host.jsp" %>
 		</c:otherwise>
 	</c:choose>
 
 	
 	<!-- 후기들 -->
-	<%@ include file="../comment/comment_host.jsp" %>
+	
 </div>
 <script>
 	var u_no = '${myAllInfo.userVO.u_no}';

@@ -22,7 +22,10 @@
 		<div class="show_host_rooms_list">
 			<c:forEach var="room" items="${myAllInfo.hosting}">
 				<div class="show_host_rooms_list_room_img">
-					<img src="${pageContext.request.contextPath}/displayFile?fileName=${room.imgList[0]}" alt="대표 이미지" />
+					<a href="${pageContext.request.contextPath}/room/detail?r_no=${room.r_no}">
+						<img src="${pageContext.request.contextPath}/displayFile?fileName=${room.imgList[0]}" alt="대표 이미지" />
+					</a>
+					
 				</div>
 				<div>
 					<h4>${room.r_name}</h4>
@@ -40,7 +43,6 @@
 				</div>
 				<c:if test="${myAllInfo.userVO.u_no == login}">
 					<div>
-						<input type="button" value="숙소 관리" data-r_no="${room.r_no}" />
 						<input type="button" value="댓글 관리" data-r_no="${room.r_no}" class="btnReview"/>
 					</div>
 				</c:if>
