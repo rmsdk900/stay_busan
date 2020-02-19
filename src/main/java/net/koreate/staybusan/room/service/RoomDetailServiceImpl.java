@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.koreate.staybusan.room.dao.RoomDetailDAO;
 import net.koreate.staybusan.room.vo.AmenityVO;
 import net.koreate.staybusan.room.vo.BuyVO;
+import net.koreate.staybusan.room.vo.ModifyRoomPrimaryDTO;
 import net.koreate.staybusan.room.vo.RoomVO;
 import net.koreate.staybusan.user.vo.UserVO;
 
@@ -52,6 +53,17 @@ public class RoomDetailServiceImpl implements RoomDetailService{
 		
 		return isBooked;
 	}
+
+	@Transactional
+	@Override
+	public RoomVO modifyRoomPrimary(ModifyRoomPrimaryDTO dto) throws Exception {
+		// 수정
+		rdd.modifyRoomPrimary(dto);
+		
+		
+		return rdd.readRoomVO(dto.getR_no());
+	}
+	
 	
 	
 

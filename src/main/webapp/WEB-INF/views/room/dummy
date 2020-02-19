@@ -1,0 +1,56 @@
+<div class="room_wrapper">
+			<div class="room_primary">
+				<div>
+					<h2 class="room_primary_title" >${roomInfo.roomVO.r_name}</h2>
+					<input type="text" name="r_name" value="${roomInfo.roomVO.r_name}" 
+					class="room_primary_title_modify" />
+				</div>
+				<div>
+					<div class="room_host_img"></div>
+					<div>
+						${roomInfo.hostVO.u_name}
+						<c:if test="${roomInfo.hostVO.u_type == 2 or roomInfo.hostVO.u_type == 3}" >
+							<img src="${pageContext.request.contextPath}/resources/img/vip.png" style="width:20px;height:20px;" />	
+						</c:if>
+					</div>
+					
+				</div>
+				<div>
+					<p>주소 : ${roomInfo.roomVO.r_addr_main}</p>
+				</div>
+				<div>
+					<ul class="room_primary_facility">
+						<li>인원 : ${roomInfo.roomVO.r_guests}</li>
+						<li>침실 : ${roomInfo.roomVO.r_bedroom}</li>
+						<li>침대 : ${roomInfo.roomVO.r_bed}</li>
+						<li>욕실 : ${roomInfo.roomVO.r_bath}</li>
+					</ul>
+					<ul class="room_primary_facility_modify">
+						<li>
+							인원 : <input class="room_primary_guests_modify" type="number" name="r_guests" min="1" step="1" value="${roomInfo.roomVO.r_guests}" />
+						</li>
+						<li>
+							침실 : <input class="room_primary_bedroom_modify" type="number" name="r_bedroom" min="0" step="1" value="${roomInfo.roomVO.r_bedroom}" />
+						</li>
+						<li>
+							침대 : <input class="room_primary_bed_modify" type="number" name="r_bed" min="0" step="1" value="${roomInfo.roomVO.r_bed}" /> 
+						</li>
+						<li>
+							욕실 : <input class="room_primary_bath_modify" type="number" name="r_bath" min="0" step="1" value="${roomInfo.roomVO.r_bath}" />
+						</li>
+					</ul>
+				</div>
+				<c:if test="${roomInfo.roomVO.u_no == login}">
+					<div class="room_primary_modify_btn">
+						<button type="button" class="room_primary_modify" >
+							방 기본 정보 수정
+						</button>
+						<button type="button" class="room_primary_modify_submit">
+							수정
+						</button>
+						<button type="button" class="room_primary_modify_cancel">
+							취소
+						</button>
+					</div>
+				</c:if>
+			</div>

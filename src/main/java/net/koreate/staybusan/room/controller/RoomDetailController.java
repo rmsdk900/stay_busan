@@ -2,6 +2,7 @@ package net.koreate.staybusan.room.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -12,10 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import net.koreate.staybusan.room.service.RoomDetailService;
 import net.koreate.staybusan.room.vo.BuyVO;
+import net.koreate.staybusan.room.vo.ModifyRoomPrimaryDTO;
+import net.koreate.staybusan.room.vo.RoomVO;
 
 @Controller
 @RequestMapping("/room/*")
@@ -57,5 +61,16 @@ public class RoomDetailController {
 		}
 		
 		return "redirect:/";
+	}
+	
+	@PostMapping("/modify")
+	@ResponseBody
+	public RoomVO modifyRoomPrimary(ModifyRoomPrimaryDTO dto) throws Exception{
+		System.out.println("입력받은 녀석 : "+dto);
+		
+		RoomVO vo = rds.modifyRoomPrimary(dto);
+		System.out.println(vo);
+		
+		return vo;
 	}
 }

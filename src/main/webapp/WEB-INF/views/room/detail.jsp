@@ -83,18 +83,26 @@
 				<div class='room_img_third'></div>
 			</div>
 			<!-- 모달 연결 버튼 -->
-			<div class="room_more_imgs">
+			<div class="room_imgs_more">
 				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomPicturesModal">
 					사진 보기
 				</button>
+				<c:if test="${roomInfo.roomVO.u_no == login}">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#">
+						사진 변경
+					</button>
+				</c:if>
 			</div>
+			
 			<%@ include file="./pictureModal.jsp" %>
 		</div>
 		<hr/>
 		<div class="room_wrapper">
 			<div class="room_primary">
 				<div>
-					<h2>${roomInfo.roomVO.r_name}</h2>
+					<h2 class="room_primary_title" >${roomInfo.roomVO.r_name}</h2>
+					<input type="text" name="r_name" value="${roomInfo.roomVO.r_name}" 
+					class="room_primary_title_modify" />
 				</div>
 				<div>
 					<div class="room_host_img"></div>
@@ -110,41 +118,35 @@
 					<p>주소 : ${roomInfo.roomVO.r_addr_main}</p>
 				</div>
 				<div>
-					<ul>
-						<li>인원 : ${roomInfo.roomVO.r_guests}</li>
-						<li>침실 : ${roomInfo.roomVO.r_bedroom}</li>
-						<li>침대 : ${roomInfo.roomVO.r_bed}</li>
-						<li>욕실 : ${roomInfo.roomVO.r_bath}</li>
+					<ul class="room_primary_facility">
+						<li class="room_primary_guests">인원 : <span>${roomInfo.roomVO.r_guests}</span></li>
+						<li class="room_primary_bedroom">침실 : <span>${roomInfo.roomVO.r_bedroom}</span></li>
+						<li class="room_primary_bed">침대 : <span>${roomInfo.roomVO.r_bed}</span></li>
+						<li class="room_primary_bath">욕실 : <span>${roomInfo.roomVO.r_bath}</span></li>
+					</ul>
+					<ul class="room_primary_facility_modify">
+						<li>
+							인원 : <input class="room_primary_guests_modify" type="number" name="r_guests" min="1" step="1" value="${roomInfo.roomVO.r_guests}" />
+						</li>
+						<li>
+							침실 : <input class="room_primary_bedroom_modify" type="number" name="r_bedroom" min="0" step="1" value="${roomInfo.roomVO.r_bedroom}" />
+						</li>
+						<li>
+							침대 : <input class="room_primary_bed_modify" type="number" name="r_bed" min="0" step="1" value="${roomInfo.roomVO.r_bed}" /> 
+						</li>
+						<li>
+							욕실 : <input class="room_primary_bath_modify" type="number" name="r_bath" min="0" step="1" value="${roomInfo.roomVO.r_bath}" />
+						</li>
 					</ul>
 				</div>
 				
 			</div>
+			
 			<hr/>
-			<div class="room_amenity">
-				<ul>
-					<li>와이파이 : ${roomInfo.amenityVO.a_wifi == 1 ? '있음' : '없음' }</li>
-					<li>난방 : ${roomInfo.amenityVO.a_heating == 1 ? '있음' : '없음' }</li>
-					<li>TV : ${roomInfo.amenityVO.a_TV == 1 ? '있음' : '없음' }</li>
-					<li>주방 : ${roomInfo.amenityVO.a_kitchen == 1 ? '있음' : '없음' }</li>
-					<li>헤어 드라이어 : ${roomInfo.amenityVO.a_hairdryer == 1 ? '있음' : '없음' }</li>
-					<li>다리미 : ${roomInfo.amenityVO.a_iron == 1 ? '있음' : '없음' }</li>
-					<li>옷걸이 : ${roomInfo.amenityVO.a_hanger == 1 ? '있음' : '없음' }</li>
-					<li>수건 : ${roomInfo.amenityVO.a_towel == 1 ? '있음' : '없음' }</li>
-					<li>엘리베이터 : ${roomInfo.amenityVO.a_elevator == 1 ? '있음' : '없음' }</li>
-					<li>주차가능 : ${roomInfo.amenityVO.a_parking == 1 ? '있음' : '없음' }</li>
-					<li>세탁기 : ${roomInfo.amenityVO.a_washer == 1 ? '있음' : '없음' }</li>
-					<li>조리기구 : ${roomInfo.amenityVO.a_cookware == 1 ? '있음' : '없음' }</li>
-					<li>냉장고 : ${roomInfo.amenityVO.a_refri == 1 ? '있음' : '없음' }</li>
-					<li>가스레인지 및 버너 : ${roomInfo.amenityVO.a_burner == 1 ? '있음' : '없음' }</li>
-					<li>식기 : ${roomInfo.amenityVO.a_dish == 1 ? '있음' : '없음' }</li>
-					<li>전자레인지 : ${roomInfo.amenityVO.a_micro == 1 ? '있음' : '없음' }</li>
-					<li>에어컨 : ${roomInfo.amenityVO.a_aircon == 1 ? '있음' : '없음' }</li>
-				</ul>
-			</div>
-			<hr/>
-			<div class="room_description">
+			<div >
 				<div>
-					<p>방 설명 : ${roomInfo.roomVO.r_desc}</p>
+					<div class="room_description">방 설명 : ${roomInfo.roomVO.r_desc}</div>
+					<textarea class="room_description_modify" name="r_desc">${roomInfo.roomVO.r_desc}</textarea>
 				</div>
 				<div>
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#messageModal" data-whatever="${roomInfo.hostVO.u_name}">
@@ -153,7 +155,62 @@
 				</div>
 				
 			</div>
+			<c:if test="${roomInfo.roomVO.u_no == login}">
+					<div>
+						1박당 1인 가격 : <input type= "number" name="r_price" value="${roomInfo.roomVO.r_price}" 
+						class="room_reservation_per_price_modify" step="100" min="0"/> 원
+					</div>
+					<div class="room_primary_modify_btn">
+						<button type="button" class="room_primary_modify" >
+							방 기본 정보 수정
+						</button>
+						<button type="button" class="room_primary_modify_submit">
+							수정
+						</button>
+						<button type="button" class="room_primary_modify_cancel">
+							취소
+						</button>
+					</div>
+				</c:if>
 			<hr/>
+			<div class="room_amenity">
+				<ul>
+					<li class="room_amenity_wifi">와이파이 : <span>${roomInfo.amenityVO.a_wifi == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_wifi_modify">
+						와이파이 : 
+						<select class="wifi_available">
+							<option value="y" <c:out value="${roomInfo.ameniyVO.a_wifi == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="n" <c:out value="${roomInfo.ameniyVO.a_wifi == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li>난방 : <span>${roomInfo.amenityVO.a_heating == 1 ? '있음' : '없음' }</span></li>
+					<li>TV : <span>${roomInfo.amenityVO.a_TV == 1 ? '있음' : '없음' }</span></li>
+					<li>주방 : <span>${roomInfo.amenityVO.a_kitchen == 1 ? '있음' : '없음' }</span></li>
+					<li>헤어 드라이어 : <span>${roomInfo.amenityVO.a_hairdryer == 1 ? '있음' : '없음' }</span></li>
+					<li>다리미 : <span>${roomInfo.amenityVO.a_iron == 1 ? '있음' : '없음' }</span></li>
+					<li>옷걸이 : <span>${roomInfo.amenityVO.a_hanger == 1 ? '있음' : '없음' }</span></li>
+					<li>수건 : <span>${roomInfo.amenityVO.a_towel == 1 ? '있음' : '없음' }</span></li>
+					<li>엘리베이터 : <span>${roomInfo.amenityVO.a_elevator == 1 ? '있음' : '없음' }</span></li>
+					<li>주차가능 : <span>${roomInfo.amenityVO.a_parking == 1 ? '있음' : '없음' }</span></li>
+					<li>세탁기 : <span>${roomInfo.amenityVO.a_washer == 1 ? '있음' : '없음' }</span></li>
+					<li>조리기구 : <span>${roomInfo.amenityVO.a_cookware == 1 ? '있음' : '없음' }</span></li>
+					<li>냉장고 : <span>${roomInfo.amenityVO.a_refri == 1 ? '있음' : '없음' }</span></li>
+					<li>가스레인지 및 버너 : <span>${roomInfo.amenityVO.a_burner == 1 ? '있음' : '없음' }</span></li>
+					<li>식기 : <span>${roomInfo.amenityVO.a_dish == 1 ? '있음' : '없음' }</span></li>
+					<li>전자레인지 : <span>${roomInfo.amenityVO.a_micro == 1 ? '있음' : '없음' }</span></li>
+					<li>에어컨 : <span>${roomInfo.amenityVO.a_aircon == 1 ? '있음' : '없음' }</span></li>
+				</ul>
+				<c:if test="${roomInfo.roomVO.u_no == login}">
+					<div>
+						<button type="button" class="room_amenity_modify" >
+							방 편의 정보 수정
+						</button>
+					</div>
+				</c:if>
+			</div>
+			
+			<hr/>
+			
 			<div class="room_host_description">
 				<div>
 					<h4>
@@ -241,6 +298,113 @@
 	<script src="${pageContext.request.contextPath}/resources/js/comment.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/upload.js"></script>
 	<script>
+		$(function(){
+			// 가리기 부터
+			$(".room_primary_title_modify").hide();
+			$(".room_primary_facility_modify").hide();
+			$(".room_primary_modify_submit").hide();
+			$(".room_primary_modify_cancel").hide();
+			$(".room_description_modify").hide();
+			$(".room_reservation_per_price_modify").hide();
+			
+		});
+		// 수정에 필요한 것들 보이기
+		$(".room_primary_modify").on("click",function(){
+			
+			$(".room_primary_title_modify").show('slow');
+			$(".room_primary_facility_modify").show('slow');
+			$(".room_primary_modify_submit").show('slow');
+			$(".room_primary_modify_cancel").show('slow');
+			$(".room_description_modify").show('slow');
+			$(".room_reservation_per_price_modify").show('slow');
+			
+			$(".room_primary_modify").hide('slow');
+			$(".room_primary_title").hide('slow');
+			$(".room_primary_facility").hide('slow');
+			$(".room_description").hide('slow');
+			
+		});
+		// 취소버튼 눌렀을 때 다시 감추기
+		$(".room_primary_modify_cancel").on("click", function(){
+			$(".room_primary_title_modify").hide('slow');
+			$(".room_primary_facility_modify").hide('slow');
+			$(".room_primary_modify_submit").hide('slow');
+			$(".room_primary_modify_cancel").hide('slow');
+			$(".room_description_modify").hide('slow');
+			$(".room_reservation_per_price_modify").hide('slow');
+			
+			$(".room_primary_modify").show('slow');
+			$(".room_primary_title").show('slow');
+			$(".room_primary_facility").show('slow');
+			$(".room_description").show('slow');
+		});
+		// 방 기본 정보 수정
+		$(".room_primary_modify_submit").on("click", function(){
+			
+			var r_name = $(".room_primary_title_modify").val();
+			var r_guests = $(".room_primary_guests_modify").val();
+			var r_bedroom = $(".room_primary_bedroom_modify").val();
+			var r_bed = $(".room_primary_bed_modify").val();
+			var r_bath = $(".room_primary_bath_modify").val();
+			var r_desc = $(".room_description_modify").val();
+			var r_price= $(".room_reservation_per_price_modify").val();
+			console.log(r_no);
+			console.log(r_name);
+			console.log(r_guests);
+			console.log(r_bedroom);
+			console.log(r_bed);
+			console.log(r_bath);
+			console.log(r_desc);
+			console.log(r_price);
+			
+			$.post(contextPath+"/room/modify", {
+				r_no: r_no,
+				r_name: r_name,
+				r_guests: r_guests,
+				r_bedroom: r_bedroom,
+				r_bed: r_bed,
+				r_bath: r_bath,
+				r_desc: r_desc,
+				r_price: r_price
+			}, function(data){
+				console.log(data);
+				
+				$(".room_primary_title").html(data.r_name);
+				$(".room_primary_title_modify").val(data.r_name);
+				$(".room_primary_guests span").html(data.r_guests);
+				$(".room_primary_guests_modify").val(data.r_guests);
+				$(".room_primary_bedroom span").html(data.r_bedroom);
+				$(".room_primary_bedroom_modify").val(data.r_bedroom);
+				$(".room_primary_bed span").html(data.r_bed);
+				$(".room_primary_bed_modify").val(data.r_bed);
+				$(".room_primary_bath span").html(data.r_bath);
+				$(".room_primary_bath_modify").val(data.r_bath);
+				$(".room_description").html(data.r_desc);
+				$(".room_description_modify").val(data.r_desc);
+				$(".room_reservation_per_price").html(data.r_price);
+				$(".room_reservation_per_price_modify").val(data.r_price);
+				
+				
+				
+				
+				$(".room_primary_title_modify").hide();
+				$(".room_primary_facility_modify").hide();
+				$(".room_primary_modify_submit").hide();
+				$(".room_primary_modify_cancel").hide();
+				$(".room_description_modify").hide();
+				$(".room_reservation_per_price_modify").hide();
+				
+				$(".room_primary_modify").show();
+				$(".room_primary_title").show();
+				$(".room_primary_facility").show();
+				$(".room_description").show();
+				
+			});
+			
+		});
+		
+		
+		
 		$.getJSON(contextPath+"/getImgs/"+r_no, function(data){
 			// 첨부파일 목록 = data
 			/* console.log(data); */
@@ -434,6 +598,39 @@
 			
 			$("#bookingForm").submit();
 			
+		});
+		// 방 기본 정보 수정 number 제한
+		$(".room_primary_facility_modify").on("keydown", "input[type=number]", function(e){
+			if(e.keyCode == 69 
+					|| e.keyCode == 190 
+					|| e.keyCode == 109 
+					|| e.keyCode == 110 
+					|| e.keyCode == 107 
+					|| e.keyCode == 189 
+					|| e.keyCode == 187){
+	            return false;              
+	        } 
+			
+		});
+		
+		// 돈 입력 양식 제한
+		$(".room_reservation_per_price_modify").keydown(function(e){
+         if(e.keyCode == 69 || e.keyCode == 190 || e.keyCode == 109 || e.keyCode == 110 || e.keyCode == 107 || e.keyCode == 189 || e.keyCode == 187){
+               return false;              
+           }
+       });
+		
+		// 예약 인원 숫자 제한
+		$("#b_guest").on("keydown", function(e){
+			if(e.keyCode == 69 
+					|| e.keyCode == 190 
+					|| e.keyCode == 109 
+					|| e.keyCode == 110 
+					|| e.keyCode == 107 
+					|| e.keyCode == 189 
+					|| e.keyCode == 187){
+	            return false;              
+	        } 
 		});
 	</script>
 	<script src="${pageContext.request.contextPath}/resources/js/pictureModal.js"></script>

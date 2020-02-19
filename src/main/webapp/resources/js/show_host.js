@@ -51,7 +51,7 @@ $(".room_comments_list").on('click', ".btnReply", function(){
 	}, function(data){
 		alert(data);
 		$("#collapse"+c_origin).collapse('hide');
-		
+		getCommentList(1, r_no);
 	});
 	
 });
@@ -91,6 +91,11 @@ function getCommentList(page, r_no){
 				str += "		<div class='room_comment_profile' >";
 				str += getGuestImg(this.u_no);
 				str += "		</div>";
+				if(this.c_dep == 0){
+					str += "	<div>";
+					str += "★ "+this.c_star;
+					str += "	</div>";
+				}
 				str += "		<div>";
 				str += getDate(this.c_regdate);
 				str += "		</div>";

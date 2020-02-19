@@ -30,6 +30,11 @@ function getCommentList(page){
 			str += "	<div class='room_comment_profile' >";
 			str += getGuestImg(this.u_no);
 			str += "	</div>";
+			if(this.c_dep == 0){
+				str += "	<div>";
+				str += "★ "+this.c_star;
+				str += "	</div>";
+			}
 			str += "	<div>";
 			str += getDate(this.c_regdate);
 			str += "	</div>";
@@ -103,7 +108,7 @@ function setCommentTotal(pm){
 function setStarAvg(avg){
 	var str="";
 	str += "★ ";
-	str += avg;
+	str += avg.toFixed(2);
 	$(".room_reservation_star").html(str);
 	return $(".room_comments_star_avg").html(str);
 }

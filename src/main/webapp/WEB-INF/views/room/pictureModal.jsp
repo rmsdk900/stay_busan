@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<style>
+	.carousel-inner {
+		display:flex;
+		justify-content: center;
+		align-items: center;
+	}
+</style>
 <!-- 사진 더 보기 모달 -->
 <div class="modal fade" id="roomPicturesModal" 
 tabindex="-1" role="dialog" 

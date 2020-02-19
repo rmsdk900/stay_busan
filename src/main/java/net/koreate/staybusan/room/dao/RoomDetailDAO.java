@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Update;
 
 import net.koreate.staybusan.room.vo.AmenityVO;
 import net.koreate.staybusan.room.vo.BuyVO;
+import net.koreate.staybusan.room.vo.ModifyRoomPrimaryDTO;
 import net.koreate.staybusan.room.vo.RoomClosedVO;
 import net.koreate.staybusan.room.vo.RoomImgVO;
 import net.koreate.staybusan.room.vo.RoomVO;
@@ -39,5 +40,12 @@ public interface RoomDetailDAO {
 	@Insert("INSERT INTO buy (r_no, u_no, b_date_from, b_date_to, b_guest, b_total_price, b_status) "
 			+ " VALUES(#{r_no}, #{u_no}, #{b_date_from}, #{b_date_to}, #{b_guest}, #{b_total_price}, 1)")
 	boolean bookingRoom(BuyVO vo)throws Exception;
+	
+	// 방 기본 정보 수정
+	@Update("UPDATE rooms SET r_name=#{r_name}, r_guests=#{r_guests}, r_bedroom=#{r_bedroom}, r_bed=#{r_bed}, r_bath=#{r_bath}, r_desc=#{r_desc}, r_price=#{r_price} WHERE r_no=#{r_no}")
+	void modifyRoomPrimary(ModifyRoomPrimaryDTO dto)throws Exception;
+	
+	// 숙박 될 때까지 거래 금액 예치하기.
+	
 	
 }

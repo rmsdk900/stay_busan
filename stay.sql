@@ -56,11 +56,23 @@ select * from user;
 
 select * from comment;
 
+
 desc comment;
 
 desc amenity;
 
 SELECT * FROM rooms;
+
+select * from buy ;
+
+select * from amenity;
+
+select * from room_img;
+
+select * from room_closed;
+
+
+
 
 
 
