@@ -44,6 +44,14 @@ public interface RoomDetailDAO {
 	// 방 기본 정보 수정
 	@Update("UPDATE rooms SET r_name=#{r_name}, r_guests=#{r_guests}, r_bedroom=#{r_bedroom}, r_bed=#{r_bed}, r_bath=#{r_bath}, r_desc=#{r_desc}, r_price=#{r_price} WHERE r_no=#{r_no}")
 	void modifyRoomPrimary(ModifyRoomPrimaryDTO dto)throws Exception;
+
+	@Update("UPDATE amenity SET a_wifi=#{a_wifi}, a_heating=#{a_heating}, a_TV=#{a_TV}, "
+			+ " a_kitchen=#{a_kitchen}, a_hairdryer=#{a_hairdryer}, a_iron=#{a_iron}, "
+			+ " a_hanger=#{a_hanger}, a_towel=#{a_towel}, a_elevator=#{a_elevator}, "
+			+ " a_parking=#{a_parking}, a_washer=#{a_washer}, a_cookware=#{a_cookware}, "
+			+ " a_refri=#{a_refri}, a_burner=#{a_burner}, a_dish=#{a_dish}, "
+			+ " a_micro=#{a_micro}, a_aircon=#{a_aircon} WHERE r_no=#{r_no}")
+	void modifyRoomAmenities(AmenityVO vo)throws Exception;
 	
 	// 숙박 될 때까지 거래 금액 예치하기.
 	

@@ -63,6 +63,14 @@ public class RoomDetailServiceImpl implements RoomDetailService{
 		
 		return rdd.readRoomVO(dto.getR_no());
 	}
+
+	@Transactional
+	@Override
+	public AmenityVO modifyRoomAmenities(AmenityVO vo) throws Exception {
+		// 수정
+		rdd.modifyRoomAmenities(vo);
+		return rdd.getAmenities(vo.getR_no());
+	}
 	
 	
 	

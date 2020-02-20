@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import net.koreate.staybusan.room.service.RoomDetailService;
+import net.koreate.staybusan.room.vo.AmenityVO;
 import net.koreate.staybusan.room.vo.BuyVO;
 import net.koreate.staybusan.room.vo.ModifyRoomPrimaryDTO;
 import net.koreate.staybusan.room.vo.RoomVO;
@@ -72,5 +73,15 @@ public class RoomDetailController {
 		System.out.println(vo);
 		
 		return vo;
+	}
+	
+	@PostMapping("/amenities")
+	@ResponseBody
+	public AmenityVO modifyRoomAmenities(AmenityVO vo)throws Exception{
+		
+		AmenityVO result = rds.modifyRoomAmenities(vo);
+		System.out.println("변경 결과 : "+result);
+		
+		return result;
 	}
 }

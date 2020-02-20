@@ -73,7 +73,10 @@ select * from room_closed;
 
 
 
-
+SELECT *, r_star*r_bookedcnt as popul FROM rooms r 
+inner join amenity a on r.r_no=a.r_no 
+inner join user u on r.u_no = u.u_no
+limit 0, 5;
 
 
 

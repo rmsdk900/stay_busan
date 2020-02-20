@@ -1,56 +1,203 @@
-<div class="room_wrapper">
-			<div class="room_primary">
-				<div>
-					<h2 class="room_primary_title" >${roomInfo.roomVO.r_name}</h2>
-					<input type="text" name="r_name" value="${roomInfo.roomVO.r_name}" 
-					class="room_primary_title_modify" />
-				</div>
-				<div>
-					<div class="room_host_img"></div>
-					<div>
-						${roomInfo.hostVO.u_name}
-						<c:if test="${roomInfo.hostVO.u_type == 2 or roomInfo.hostVO.u_type == 3}" >
-							<img src="${pageContext.request.contextPath}/resources/img/vip.png" style="width:20px;height:20px;" />	
-						</c:if>
-					</div>
+<li class="room_amenity wifi">와이파이 : <span>${roomInfo.amenityVO.a_wifi == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify">
+						와이파이 : 
+						<select class="wifi_available" name="a_wifi">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_wifi == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_wifi == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity heating">난방 : <span>${roomInfo.amenityVO.a_heating == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify">
+						난방 : 
+						<select class="heating_available" name="a_heating">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_heating == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_heating == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity TV">TV : <span>${roomInfo.amenityVO.a_TV == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						TV : 
+						<select class="TV_available" name="a_TV">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_TV == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_TV == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity kitchen">주방 : <span>${roomInfo.amenityVO.a_kitchen == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						주방 : 
+						<select class="kitchen_available" name="a_kitchen">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_kitchen == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_kitchen == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity hairdryer">헤어 드라이어 : <span>${roomInfo.amenityVO.a_hairdryer == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						헤어 드라이어 : 
+						<select class="hairdryer_available" name="a_hairdryer">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_hairdryer == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_hairdryer == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity iron">다리미 : <span>${roomInfo.amenityVO.a_iron == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						다리미 : 
+						<select class="iron_available" name="a_iron">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_iron == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_iron == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity hanger">옷걸이 : <span>${roomInfo.amenityVO.a_hanger == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						옷걸이 : 
+						<select class="hanger_available" name="a_hanger">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_hanger == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_hanger == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
 					
-				</div>
-				<div>
-					<p>주소 : ${roomInfo.roomVO.r_addr_main}</p>
-				</div>
-				<div>
-					<ul class="room_primary_facility">
-						<li>인원 : ${roomInfo.roomVO.r_guests}</li>
-						<li>침실 : ${roomInfo.roomVO.r_bedroom}</li>
-						<li>침대 : ${roomInfo.roomVO.r_bed}</li>
-						<li>욕실 : ${roomInfo.roomVO.r_bath}</li>
-					</ul>
-					<ul class="room_primary_facility_modify">
-						<li>
-							인원 : <input class="room_primary_guests_modify" type="number" name="r_guests" min="1" step="1" value="${roomInfo.roomVO.r_guests}" />
-						</li>
-						<li>
-							침실 : <input class="room_primary_bedroom_modify" type="number" name="r_bedroom" min="0" step="1" value="${roomInfo.roomVO.r_bedroom}" />
-						</li>
-						<li>
-							침대 : <input class="room_primary_bed_modify" type="number" name="r_bed" min="0" step="1" value="${roomInfo.roomVO.r_bed}" /> 
-						</li>
-						<li>
-							욕실 : <input class="room_primary_bath_modify" type="number" name="r_bath" min="0" step="1" value="${roomInfo.roomVO.r_bath}" />
-						</li>
-					</ul>
-				</div>
-				<c:if test="${roomInfo.roomVO.u_no == login}">
-					<div class="room_primary_modify_btn">
-						<button type="button" class="room_primary_modify" >
-							방 기본 정보 수정
-						</button>
-						<button type="button" class="room_primary_modify_submit">
-							수정
-						</button>
-						<button type="button" class="room_primary_modify_cancel">
-							취소
-						</button>
-					</div>
-				</c:if>
-			</div>
+					<li class="room_amenity towel">수건 : <span>${roomInfo.amenityVO.a_towel == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						수건 : 
+						<select class="towel_available" name="a_towel">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_towel == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_towel == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity elevator">엘리베이터 : <span>${roomInfo.amenityVO.a_elevator == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						엘리베이터 : 
+						<select class="elevator_available" name="a_elevator">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_elevator == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_elevator == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity parking">주차가능 : <span>${roomInfo.amenityVO.a_parking == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						주차가능 : 
+						<select class="parking_available" name="a_parking">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_parking == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_parking == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity washer">세탁기 : <span>${roomInfo.amenityVO.a_washer == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						세탁기 : 
+						<select class="washer_available" name="a_washer">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_washer == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_washer == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity cookware">조리기구 : <span>${roomInfo.amenityVO.a_cookware == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						조리기구 : 
+						<select class="cookware_available" name="a_cookware">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_cookware == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_cookware == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity refri">냉장고 : <span>${roomInfo.amenityVO.a_refri == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						냉장고 : 
+						<select class="refri_available" name="a_refri">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_refri == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_refri == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amentiy burner">가스레인지 및 버너 : <span>${roomInfo.amenityVO.a_burner == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						가스레인지 및 버너 : 
+						<select class="burner_available" name="a_burner">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_burner == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_burner == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity dish">식기 : <span>${roomInfo.amenityVO.a_dish == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						식기 : 
+						<select class="dish_available" name="a_dish">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_dish == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_dish == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity micro">전자레인지 : <span>${roomInfo.amenityVO.a_micro == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						전자레인지 : 
+						<select class="micro_available" name="a_micro">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_micro == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_micro == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+					<li class="room_amenity aircon">에어컨 : <span>${roomInfo.amenityVO.a_aircon == 1 ? '있음' : '없음' }</span></li>
+					<li class="room_amenity_modify" >
+						에어컨 : 
+						<select class="aircon_available" name="a_aircon">
+							<option value="1" <c:out value="${roomInfo.amenityVO.a_aircon == 1 ? 'selected' : '' }"/>>있음</option>
+							<option value="0" <c:out value="${roomInfo.amenityVO.a_aircon == 0 ? 'selected' : '' }"/>>없음</option>
+						</select>
+					</li>
+
+
+// 방 기본 정보 수정
+		$(".room_primary_modify_submit").on("click", function(){
+			
+			var r_name = $(".room_primary_title_modify").val();
+			var r_guests = $(".room_primary_guests_modify").val();
+			var r_bedroom = $(".room_primary_bedroom_modify").val();
+			var r_bed = $(".room_primary_bed_modify").val();
+			var r_bath = $(".room_primary_bath_modify").val();
+			var r_desc = $(".room_description_modify").val();
+			var r_price= $(".r_price").val();
+			console.log(r_no);
+			console.log(r_name);
+			console.log(r_guests);
+			console.log(r_bedroom);
+			console.log(r_bed);
+			console.log(r_bath);
+			console.log(r_desc);
+			console.log(r_price);
+			
+			$.post(contextPath+"/room/modify", {
+				r_no: r_no,
+				r_name: r_name,
+				r_guests: r_guests,
+				r_bedroom: r_bedroom,
+				r_bed: r_bed,
+				r_bath: r_bath,
+				r_desc: r_desc,
+				r_price: r_price
+			}, function(data){
+				console.log(data);
+				
+				$(".room_primary_title").html(data.r_name);
+				$(".room_primary_title_modify").val(data.r_name);
+				$(".room_primary_guests span").html(data.r_guests);
+				$(".room_primary_guests_modify").val(data.r_guests);
+				$(".room_primary_bedroom span").html(data.r_bedroom);
+				$(".room_primary_bedroom_modify").val(data.r_bedroom);
+				$(".room_primary_bed span").html(data.r_bed);
+				$(".room_primary_bed_modify").val(data.r_bed);
+				$(".room_primary_bath span").html(data.r_bath);
+				$(".room_primary_bath_modify").val(data.r_bath);
+				$(".room_description").html(data.r_desc);
+				$(".room_description_modify").val(data.r_desc);
+				$(".room_reservation_per_price").html(data.r_price);
+				$(".r_price").val(data.r_price);
+				
+				
+				
+				
+				$(".room_primary_title_modify").hide();
+				$(".room_primary_facility_modify").hide();
+				$(".room_primary_modify_submit").hide();
+				$(".room_primary_modify_cancel").hide();
+				$(".room_description_modify").hide();
+				$(".room_reservation_per_price_modify").hide();
+				
+				$(".room_primary_modify").show();
+				$(".room_primary_title").show();
+				$(".room_primary_facility").show();
+				$(".room_description").show();
+				
+			});
+			
+		});
