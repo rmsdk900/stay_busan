@@ -1,7 +1,7 @@
 /**
  * 
  */
-$(".room_more_imgs button").on("click", function(){
+$("#roomPicturesModalBtn").on("click", function(){
 	console.log("사진 더 보기!")
 	// 초기화
 	$(".carousel-indicators").html("");
@@ -9,11 +9,11 @@ $(".room_more_imgs button").on("click", function(){
 	// 생성
 	$.getJSON(contextPath+"/getImgs/"+r_no, function(data){
 		// 첨부파일 목록 = data
-		console.log(data);
+//		console.log(data);
 		
 		for(var i=0;i<data.length;i++){
 			var fileInfo = getFileInfo(data[i]);
-			console.log(fileInfo);
+//			console.log(fileInfo);
 			
 			var olli = "";
 			olli += "<li data-target='#carousel-example-generic' " +

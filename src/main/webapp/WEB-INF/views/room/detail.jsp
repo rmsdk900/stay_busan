@@ -84,17 +84,22 @@
 			</div>
 			<!-- 모달 연결 버튼 -->
 			<div class="room_imgs_more">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomPicturesModal">
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#roomPicturesModal"
+				id="roomPicturesModalBtn">
 					사진 보기
 				</button>
 				<c:if test="${roomInfo.roomVO.u_no == login}">
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modPicture"
+					id="modPictureBtn">
 						사진 변경
 					</button>
 				</c:if>
 			</div>
 			
 			<%@ include file="./pictureModal.jsp" %>
+			<!-- 사진 변경 모달 -->
+			<%@ include file="./modPicture.jsp" %>
+			
 		</div>
 		<hr/>
 		<div class="room_wrapper">
@@ -823,6 +828,7 @@
 	<script src="${pageContext.request.contextPath}/resources/js/pictureModal.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/messageModal.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/js/detailDate.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/modPicture.js"></script>
 </c:if>
 
 <hr/>
