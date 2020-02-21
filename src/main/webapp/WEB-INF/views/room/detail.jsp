@@ -5,6 +5,7 @@
 <%@ include file="../common/header.jsp" %>
 <script type="text/javascript">
 	var r_no = ${roomInfo.roomVO.r_no};	
+	var u_no = ${roomInfo.roomVO.u_no};
 </script>
 <style>
 	.room_imgs {

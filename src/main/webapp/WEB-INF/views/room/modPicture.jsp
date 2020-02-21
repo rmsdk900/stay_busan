@@ -43,9 +43,14 @@ aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-body">
 				<div class="pictures_add">
 					<img src="${pageContext.request.contextPath}/resources/img/box.png" alt="이미지 업로드" />
-				</div>			
-				<div class="pictures_preview">
-				</div>				
+				</div>
+				<form id="modifyForm" action="modRoomImgs" method="post">
+					<input type="hidden" name="u_no" value="${roomInfo.roomVO.u_no}"/>
+					<input type="hidden" name="r_no" value="${roomInfo.roomVO.r_no}"/>
+					<div class="pictures_preview">
+					</div>	
+				</form>
+								
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

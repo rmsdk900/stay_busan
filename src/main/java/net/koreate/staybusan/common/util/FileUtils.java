@@ -46,7 +46,7 @@ public class FileUtils {
 	
 	private void createUploadPath() {
 		uploadPath = context.getRealPath(File.separator+"upload");
-		System.out.println("uploadPath : "+uploadPath);
+//		System.out.println("uploadPath : "+uploadPath);
 		File file = new File(uploadPath);
 		
 		if(!file.exists()) {
@@ -62,8 +62,9 @@ public class FileUtils {
 	// 전체 파일 올리기(controller랑 연결)
 	public List<String> uploadFile(MultipartFile[] files, int u_no, int r_no) throws Exception{
 		List<String> fileList = new ArrayList<>();
-		
+		System.out.println("넣을 파일들 : "+files);
 		for(MultipartFile file : files) {
+			System.out.println("넣을 파일 : "+file);
 			try {
 				String fileName = uploadFile(file, u_no, r_no);
 				System.out.println("fileList에 넣은 파일 이름 : "+fileName);
@@ -135,27 +136,6 @@ public class FileUtils {
 		return entirePath.substring(uploadPath.length()).replace(File.separatorChar, '/');
 	}
 	
-	
-	// ----------------공사 중-----------------------------------
-	
-	public byte[] displayFile(String fileName) throws IOException{
-//		System.out.println("보여줄 fileName : "+fileName);
-		
-		InputStream in = null;
-		String path = uploadPath+(fileName).replace('/', File.separatorChar);
-		byte[] bytes = null;
-		try {
-			in = new FileInputStream(path);
-			bytes = IOUtils.toByteArray(in);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("File이 없음 : "+e.getMessage());
-		} finally {
-			in.close();
-		}
-		return bytes;
-	}
-	
 	public HttpHeaders getHeader(String fileName) throws Exception{
 		HttpHeaders header = null;
 		
@@ -176,20 +156,42 @@ public class FileUtils {
 		return header;
 	}
 	
+	public byte[] displayFile(String fileName) throws IOException{
+//		System.out.println("보여줄 fileName : "+fileName);
+		
+		InputStream in = null;
+		String path = uploadPath+(fileName).replace('/', File.separatorChar);
+		byte[] bytes = null;
+		try {
+			in = new FileInputStream(path);
+			bytes = IOUtils.toByteArray(in);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("File이 없음 : "+e.getMessage());
+		} finally {
+			in.close();
+		}
+		return bytes;
+	}
 	
-
 	public String deleteAllFiles(List<String> files) {
 		for(String file : files) {
-			String ex = file.substring(file.lastIndexOf(".")+1);
-			if(MediaUtils.getMediaType(ex)!= null) {
-				// 원본도 삭제
-				String name = file.replace("s_", "");
-				new File(uploadPath+(name).replace('/', File.separatorChar)).delete();
-			}
+			
 			new File(uploadPath+(file).replace('/', File.separatorChar)).delete();
 		}
 		return "SELECTED FILES IS DELETED";
 	}
+	
+	
+	// ----------------공사 중-----------------------------------
+	
+	
+	
+	
+	
+	
+
+	
 
 	public String deleteFile(String fileName) {
 		String ex = fileName.substring(fileName.lastIndexOf(".")+1);

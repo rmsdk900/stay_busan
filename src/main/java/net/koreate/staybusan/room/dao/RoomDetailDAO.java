@@ -2,6 +2,7 @@ package net.koreate.staybusan.room.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -52,6 +53,13 @@ public interface RoomDetailDAO {
 			+ " a_refri=#{a_refri}, a_burner=#{a_burner}, a_dish=#{a_dish}, "
 			+ " a_micro=#{a_micro}, a_aircon=#{a_aircon} WHERE r_no=#{r_no}")
 	void modifyRoomAmenities(AmenityVO vo)throws Exception;
+	
+	@Delete("DELETE FROM room_img WHERE r_no=#{r_no}")
+	void deleteAllImgs(int r_no)throws Exception;
+	
+	
+	
+	
 	
 	// 숙박 될 때까지 거래 금액 예치하기.
 	

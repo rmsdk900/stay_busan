@@ -35,13 +35,14 @@ public class FileController {
 		ResponseEntity<Object> entity = null;
 		List<String> list;
 		
+//		System.out.println("넣을 파일들 : "+files);
+		
 		try {
 			list = FileUtils.getInstance(context).uploadFile(files, u_no, r_no);
-			// 임시로 여기서 db에 넣겠음.
+			// 확인
 			System.out.println("등록한 fileList 확인");
 			System.out.println(list);
 			
-			ris.regImg(list, u_no, r_no);
 			
 			entity = new ResponseEntity<>(list, HttpStatus.CREATED);
 		} catch (Exception e) {
@@ -89,4 +90,19 @@ public class FileController {
 		
 		return new ResponseEntity<byte[]>(utils.displayFile(fileName),utils.getHeader(fileName),HttpStatus.OK);
 	}
+	
+	@PostMapping("/deleteAllFiles")
+	public ResponseEntity<String> deleteAllFiles(@RequestParam("files[]")List<String> files) throws IOException{
+		ResponseEntity<String> entity = null;
+		
+		for(String s : files) {
+			System.out.println("deleteAllFiles : "+s);
+		}
+		String result = FileUtils.getInstance(context).deleteAllFiles(files);
+		entity = new ResponseEntity<>(result, HttpStatus.OK);
+		
+		return entity;
+	}
+	
+	
 }

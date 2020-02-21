@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.koreate.staybusan.room.vo.AmenityVO;
 import net.koreate.staybusan.room.vo.BuyVO;
+import net.koreate.staybusan.room.vo.ModifyRoomImgDTO;
 import net.koreate.staybusan.room.vo.ModifyRoomPrimaryDTO;
 import net.koreate.staybusan.room.vo.RoomVO;
 
@@ -20,5 +21,8 @@ public interface RoomDetailService {
 
 	// 방 편의시설 정보 수정하기
 	AmenityVO modifyRoomAmenities(AmenityVO vo)throws Exception;
+
+	// 방 이미지 수정하기
+	void modRoomImgs(ModifyRoomImgDTO dto)throws Exception;
 
 }

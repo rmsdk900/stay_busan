@@ -15,9 +15,9 @@ $("#modPictureBtn").on("click", function(){
 			div += "<a href='"+fileInfo.imgSrc+"' target='_blank'>"
 			div += "<img src='"+fileInfo.imgSrc+"' alt='"+(i+1)+"번째 사진' />";
 			div += "</a>";
-			div += "<button type='button' class='btn btn-warning btn-circle' >";
+			div += "<a type='button' class='btn btn-warning btn-circle delBtn' href='"+fileInfo.fullName+"'>";
 			div += "<i class='fa fa-times'>X</i>";
-			div += "</button><br/>";
+			div += "</a><br/>";
 			div += "</div>";
 			$(".pictures_preview").append(div);
 		}
@@ -26,6 +26,9 @@ $("#modPictureBtn").on("click", function(){
 
 var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 var maxSize = 20971520;
+
+// 파일 삭제용 리스트
+var delArr = new Array();
 
 function checkExtension(fileName, fileSize){
 	if(fileSize >= maxSize){
@@ -48,7 +51,7 @@ $(".pictures_add").on("drop", function(e){
 	e.preventDefault();
 	console.log("upload");
 	
-	files = event.originalEvent.dataTransfer.files;
+	files = e.originalEvent.dataTransfer.files;
 	
 	var formData = new FormData();
 	
@@ -56,24 +59,62 @@ $(".pictures_add").on("drop", function(e){
 		if(!checkExtension(files[i].name, files[i].size)){
 			return false;
 		}
-		formData.append("uploadFile", files[i]);
+		formData.append("file", files[i]);
 		// 파일 형성? 
 	}
-});
-$("#updateImgBtn").on("click", function(){
+	// 파일 upload 폴더에 올리는 것부터!
 	$.ajax({
-		url: "임시",
-		processData: false,
-		contentType: false,
+		type: "POST",
 		data: formData,
-		type: 'POST',
-		dataType: 'json',
-		success: function(data){
-			console.log(data);
-			// 업로드 결과 처리 메소드 만들자.
-			// 새로 고침?
-			location.reload();
-			
+		url : contextPath+"/uploadFile/"+u_no+"/"+r_no,
+		dataType : "json",
+		processData : false,
+		contentType : false,
+		success : function(data){
+			console.log(data.length);
+			for(var i =0; i< data.length; i++){
+				var fileInfo = getFileInfo(data[i]);
+				
+				var div = "<div class='mod_imgs' >";
+				div += "<a href='"+fileInfo.imgSrc+"' target='_blank'>"
+				div += "<img src='"+fileInfo.imgSrc+"' alt='"+(i+1)+"번째 사진' />";
+				div += "</a>";
+				div += "<a type='button' class='btn btn-warning btn-circle delBtn' href='"+fileInfo.fullName+"'>";
+				div += "<i class='fa fa-times'>X</i>";
+				div += "</a><br/>";
+				div += "</div>";
+				$(".pictures_preview").append(div);
+			}
+		},
+		error : function(res){
+			alert(res.responseText);
 		}
 	});
+});
+
+
+
+
+$(".pictures_preview").on("click", ".delBtn", function(e){
+	e.preventDefault();
+	var fileLink = $(this).attr("href");
+	delArr.push(fileLink);
+	$(this).closest("div").remove();
+});
+
+$("#updateImgBtn").on("click", function(){
+	var str = "";
+	
+	var fileList = $(".pictures_preview .delBtn");
+	
+	$(fileList).each(function(index){
+		str += "<input type='hidden' name='files["+index+"]' value='"+$(this).attr("href")+"' />";
+	});
+	$("#modifyForm").append(str);
+	
+	$.post(contextPath+"/deleteAllFiles", {files:delArr}, function(data){
+		console.log(data);
+	});
+	
+	$("#modifyForm").submit();
 });

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import net.koreate.staybusan.room.service.RoomDetailService;
 import net.koreate.staybusan.room.vo.AmenityVO;
 import net.koreate.staybusan.room.vo.BuyVO;
+import net.koreate.staybusan.room.vo.ModifyRoomImgDTO;
 import net.koreate.staybusan.room.vo.ModifyRoomPrimaryDTO;
 import net.koreate.staybusan.room.vo.RoomVO;
 
@@ -83,5 +84,18 @@ public class RoomDetailController {
 		System.out.println("변경 결과 : "+result);
 		
 		return result;
+	}
+	
+	@PostMapping("modRoomImgs")
+	public String modifyRoomImgs(
+			ModifyRoomImgDTO dto,
+			RedirectAttributes rttr
+			) throws Exception{
+		System.out.println(dto);
+		
+		rds.modRoomImgs(dto);
+		
+		
+		return "redirect:/room/detail?r_no="+dto.getR_no();
 	}
 }
