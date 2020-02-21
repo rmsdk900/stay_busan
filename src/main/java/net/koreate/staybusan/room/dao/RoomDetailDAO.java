@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -53,15 +54,21 @@ public interface RoomDetailDAO {
 			+ " a_refri=#{a_refri}, a_burner=#{a_burner}, a_dish=#{a_dish}, "
 			+ " a_micro=#{a_micro}, a_aircon=#{a_aircon} WHERE r_no=#{r_no}")
 	void modifyRoomAmenities(AmenityVO vo)throws Exception;
-	
+	// 모든 이미지 삭제
 	@Delete("DELETE FROM room_img WHERE r_no=#{r_no}")
 	void deleteAllImgs(int r_no)throws Exception;
 	
+	// 가장 최근의 구매 번호 가져오기
+	@Select("SELECT LAST_INSERT_ID()")
+	Integer getLastB_no()throws Exception;
+	// 예치하기
+	@Insert("INSERT INTO money (b_no, m_u_g_no, m_u_h_no, m_price) VALUES(#{b_no}, #{u_no}, #{host}, #{b_total_price})")
+	void deposit(@Param("b_no") Integer b_no,@Param("u_no") int u_no,@Param("host") Integer host, @Param("b_total_price") int b_total_price)throws Exception;
 	
 	
 	
 	
-	// 숙박 될 때까지 거래 금액 예치하기.
+	
 	
 	
 }

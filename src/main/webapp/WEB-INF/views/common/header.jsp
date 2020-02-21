@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="login" value="1" scope="session"/>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<!-- 임의로 넣어놓은 로그인 세션 -->
+<c:set var="login" value="1" scope="session"/>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">

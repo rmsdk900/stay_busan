@@ -365,8 +365,8 @@
 			<div class="room_reservation">
 				<form id="bookingForm" action="bookingRoom" method="post">
 					<input type="hidden" name="r_no" value="${roomInfo.roomVO.r_no}" />
-					<!-- 얘는 지금 호스트 번호로 구매를 하게 되어있지만 회원가입 로그인 구현 되면 로그인한 사람으로 바꿀 것! -->
-					<input type="hidden" name="u_no" value="${roomInfo.hostVO.u_no}" />
+					<!-- 로그인 한 사람의 번호를 임의로 넣어놓음. -->
+					<input type="hidden" name="u_no" value="${login}" />
 					<div>
 						<div>
 							<span class="room_reservation_per_price">${roomInfo.roomVO.r_price}</span>
@@ -601,12 +601,9 @@
 			
 		});
 		
-		$(".room_date_modify_btn").on("click", function(){
-			$(".room_date_modify_wrapper").show('slow');
-			$(".room_date_modify_btn").hide('slow');
-		});
 		
 		
+		// 배경 이미지들 가져오기 
 		$.getJSON(contextPath+"/getImgs/"+r_no, function(data){
 			// 첨부파일 목록 = data
 			/* console.log(data); */
@@ -665,7 +662,7 @@
 				
 			}
 		});
-		
+		// 호스트 이미지 들고 오기
 		$.getJSON(contextPath+"/getHostImg/"+r_no, function(data){
 			
 			var fileInfo = getFileInfo(data[0]);
@@ -678,14 +675,14 @@
 			$(".room_host_img").append(html);
 			
 		});
-		
+		// 사진 클릭했을 때 그 때부터 슬라이드 시작
 		function openSlide(i){
 			console.log(i);
 			$('#roomPicturesModal').modal('show');
 			$('.carousel').carousel(i);
 		}
-		// 공사하자 인원 입력시 안되게 하는 건
 		
+		// 인원 입력 시 처리될 함수
 		$("#b_guest").on("input", function(){
 			var cnt = $(this).val();
 			if (cnt != null && cnt != ''){
@@ -767,7 +764,7 @@
 			}
 			
 		});
-		
+		// 총 가격 계산
 		function calcTotalPrice(cnt){
 			var per_price = $(".room_reservation_per_price").html();
 			var nights = $(".room_reservation_days span").html();
@@ -776,7 +773,7 @@
 			$(".room_reservation_price_real").html("￦"+total_price);
 			$("#b_total_price").val(total_price);
 		}
-		
+		// 결제 보내기. 
 		$(".room_reservation_submit").on("click",function(){
 			var b_guest = $("#b_guest").val();
 			var date_from = $("#startDate").val();

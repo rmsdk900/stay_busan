@@ -25,6 +25,7 @@ public class RoomVO {
 	private Date r_checkin;
 	private Date r_checkout;
 	private String r_gu;
+	private int r_deleted;
 	
 	private Float r_star;
 	private int r_bookedcnt;

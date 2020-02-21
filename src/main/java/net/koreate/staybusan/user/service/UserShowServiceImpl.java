@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import net.koreate.staybusan.room.dao.RoomImgDAO;
 import net.koreate.staybusan.room.vo.RoomVO;
 import net.koreate.staybusan.user.dao.UserShowDAO;
+import net.koreate.staybusan.user.vo.ModIntroDTO;
 import net.koreate.staybusan.user.vo.UserVO;
 
 @Service
@@ -40,10 +41,7 @@ public class UserShowServiceImpl implements UserShowService{
 				System.out.println("이미지 리스트 비지 않았다!");
 				vo.setImgList(imgList);
 			}
-			
-			
 		}
-		
 		
 		if(userVO != null) {
 			myInfo.put("userVO", userVO);
@@ -54,5 +52,15 @@ public class UserShowServiceImpl implements UserShowService{
 		
 		return myInfo;
 	}
+
+	@Override
+	public UserVO modIntro(ModIntroDTO dto) throws Exception {
+		// 수정
+		usd.modIntro(dto);
+		
+		return usd.getUser(dto.getU_no());
+	}
+	
+	
 	
 }

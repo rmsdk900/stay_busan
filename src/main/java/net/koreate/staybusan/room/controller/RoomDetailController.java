@@ -98,4 +98,11 @@ public class RoomDetailController {
 		
 		return "redirect:/room/detail?r_no="+dto.getR_no();
 	}
+	
+	
+	//테스트
+	@GetMapping("transfer")
+	public String transfer() {
+		return "user/transfer";
+	}
 }

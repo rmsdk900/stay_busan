@@ -78,6 +78,16 @@ inner join amenity a on r.r_no=a.r_no
 inner join user u on r.u_no = u.u_no
 limit 0, 5;
 
+SELECT * FROM buy;
+SELECT * FROM money;
+
+SELECT * FROM user;
+
+UPDATE user SET u_type=3 WHERE u_no=1;
+UPDATE user SET u_type=0 WHERE u_no=3;
+UPDATE user SET u_type=2 WHERE u_no=5;
+
+
 
 
 

@@ -20,6 +20,10 @@
 		border-radius: 100px;
 	}
 </style>
+<script>
+	var u_no = '${myAllInfo.userVO.u_no}';
+	var login = '${login}';
+</script>
 <!-- 소개 페이지 전체 -->
 <div class="show_wrapper">
 	<!-- 프로필 사진 + 제목 + 회원가입일 + 소개  -->
@@ -47,14 +51,22 @@
 		</div>
 		<!-- 소개 -->
 		<div>
-			<div>
-				<textarea readonly>${myAllInfo.userVO.u_introduce}</textarea>
+			<div class="show_my_introduce">
+				<textarea  readonly>${myAllInfo.userVO.u_introduce}</textarea>
+				
 			</div>
-			<div>
-				<c:if test="${myAllInfo.userVO.u_no == login}">
-					<input type="button" value="편집" />
-				</c:if>
+			<div class="show_my_introduce_mod">
+				<textarea  >${myAllInfo.userVO.u_introduce}</textarea>
+				<div>
+					<button class="show_my_introduce_mod_submit">편집 완료</button>
+					<button class="show_my_introduce_mod_cancel">취소</button>
+				</div>
 			</div>
+			<c:if test="${myAllInfo.userVO.u_no == login}">
+				<div>
+					<input type="button" class="show_my_introduce_mod_open" value="편집" />
+				</div>
+			</c:if>
 		</div>
 	</div>
 	<!-- 숙소들 -->
@@ -68,24 +80,23 @@
 			2) 접속한 내 u_no랑 보려는 마이페이지의 u_no가 다를 때 = 다른 사람 거 볼 때
 	-->
 	<c:choose>
-		<c:when test="${myAllInfo.userVO.u_type == 0}">
+		<c:when test="${myAllInfo.userVO.u_type == 0 or myAllInfo.userVO.u_type == 9}">
 			<%@ include file="./showGuestRooms.jsp" %>
 		</c:when>
 		<c:otherwise>
 			<%@ include file="./showHostRooms.jsp" %>
+			<!-- 후기들 -->
 			<%@ include file="../comment/comment_host.jsp" %>
+			<script src="${pageContext.request.contextPath}/resources/js/show_host.js"></script>
 		</c:otherwise>
 	</c:choose>
 
 	
-	<!-- 후기들 -->
+	
 	
 </div>
-<script>
-	var u_no = '${myAllInfo.userVO.u_no}';
-	var login = '${login}';
-</script>
 
-<script src="${pageContext.request.contextPath}/resources/js/show_host.js"></script>
+
+
 <script src="${pageContext.request.contextPath}/resources/js/upload.js"></script>
 <%@ include file="../common/footer.jsp" %>

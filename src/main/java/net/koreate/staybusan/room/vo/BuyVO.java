@@ -17,4 +17,7 @@ public class BuyVO {
 	
 	private String date_from_dummy;
 	private String date_to_dummy;
+	
+	
+	
 }
