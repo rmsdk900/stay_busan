@@ -341,7 +341,7 @@
 					<h4>
 						호스트 : ${roomInfo.hostVO.u_name}님
 						<c:if test="${roomInfo.hostVO.u_type == 2 or roomInfo.hostVO.u_type == 3}" >
-							<img src="${pageContext.request.contextPath}/resources/img/vip.png" style="width:20px;height:20px;"/>	
+							<img src="${pageContext.request.contextPath}/resources/img/vip.png" style="width:20px;height:20px;"/>
 						</c:if>
 					</h4>
 				</div>
@@ -416,6 +416,8 @@
 				
 				
 			</div>
+			<hr/>
+			
 		</div>
 		
 	</div>
@@ -435,6 +437,8 @@
 			$(".room_amenity_modify").hide();
 			$(".room_amenity_modify_submit").hide();
 			$(".room_amenity_modify_cancel").hide();
+			
+			$(".room_date_modify_wrapper").hide();
 			
 		});
 		// 수정에 필요한 것들 보이기
@@ -597,6 +601,11 @@
 			
 		});
 		
+		$(".room_date_modify_btn").on("click", function(){
+			$(".room_date_modify_wrapper").show('slow');
+			$(".room_date_modify_btn").hide('slow');
+		});
+		
 		
 		$.getJSON(contextPath+"/getImgs/"+r_no, function(data){
 			// 첨부파일 목록 = data
@@ -661,7 +670,11 @@
 			
 			var fileInfo = getFileInfo(data[0]);
 			/* console.log(fileInfo); */
-			var html = "<img src='"+fileInfo.imgSrc+"' alt='호스트 사진' class='FilledImg' />";
+			
+			var html = "";
+			html += "<a href='"+contextPath+"/user/show?u_no="+u_no+"'>";
+			html += "<img src='"+fileInfo.imgSrc+"' alt='호스트 사진' class='FilledImg' />"
+			html += "</a>";
 			$(".room_host_img").append(html);
 			
 		});
