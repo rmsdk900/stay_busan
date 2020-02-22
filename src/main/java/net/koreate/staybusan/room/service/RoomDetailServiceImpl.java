@@ -61,7 +61,12 @@ public class RoomDetailServiceImpl implements RoomDetailService{
 			 Integer host = rdd.getRoomOwner(vo.getR_no()).getU_no();
 			 System.out.println("그 방의 호스트 번호 : "+host);
 			 if(host != null && b_no != null) {
+				 // 돈 예치하기
 				 rdd.deposit(b_no, vo.getU_no(), host, vo.getB_total_price());
+				 // 방 산 사람 돈 빼기
+				 rdd.pay(vo.getU_no(), vo.getB_total_price());
+				 
+				 
 			 }
 			
 			

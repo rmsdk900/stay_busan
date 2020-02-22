@@ -66,6 +66,13 @@ public interface RoomDetailDAO {
 	void deposit(@Param("b_no") Integer b_no,@Param("u_no") int u_no,@Param("host") Integer host, @Param("b_total_price") int b_total_price)throws Exception;
 	
 	
+	// 2020 02 22
+	
+	// 게스트한테서 돈이 빠져나가야 함. 
+	@Update("UPDATE user SET u_balance=u_balance-#{b_total_price} WHERE u_no=#{u_no}")
+	void pay(int u_no, int b_total_price);
+	
+	
 	
 	
 	

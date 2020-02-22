@@ -43,11 +43,38 @@
 							<span>총 예약 : </span>
 							<span><c:out value="${room.r_bookedcnt}"/></span>
 						</div>
-						<c:if test="${myAllInfo.userVO.u_no == login}">
+						<c:if test="${myAllInfo.userVO.u_no eq login}">
 							<div>
-								<input type="button" value="댓글 관리" data-r_no="${room.r_no}" class="btnReview"/>
-								<input type="button" value="방 삭제" data-r_no="${room.r_no}" class="btnDelRoom" />
+								<input type="button" value="댓글 관리" data-r_no="${room.r_no}" class="btnReview" />
+								<input type="button" value="${room.r_no}번 방 삭제" data-r_no="${room.r_no}" data-toggle="modal"
+								data-target="#delRoom${room.r_no}"  id="modalBtnDelRoom"/>
 							</div>
+							<div class="modal fade" id="delRoom${room.r_no}" 
+							tabindex="-1" role="dialog" 
+							aria-labelledby="myModalLabel" aria-hidden="true">
+								<div class="modal-dialog modal-sm" >
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" 
+											data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true" >&times;</span>
+											</button>
+											<h4 class="modal-title" id="myModalLabel${room.r_no}">${room.r_no}번 방 삭제 확인</h4>
+										</div>
+										<div class="modal-body">
+											<p><c:out value="${room.r_no}"/>번 방을 정말 삭제하시겠습니까?</p>	
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+											<button type="button" class="btn btn-primary" id="btnDelRoom${room.r_no}" >방 삭제</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- 방 삭제 기능 구현 -->
+							<script>
+								
+							</script>
 						</c:if>
 					</c:if>
 			</c:forEach>
@@ -84,11 +111,7 @@
 							<span>총 예약 : </span>
 							<span><c:out value="${room.r_bookedcnt}"/></span>
 						</div>
-						<c:if test="${myAllInfo.userVO.u_no == login}">
-							<div>
-								<input type="button" value="방 복원" data-r_no="${room.r_no}" class="btnRestoreRoom" />
-							</div>
-						</c:if>
+						
 					</c:if>
 			</c:forEach>
 		</div>

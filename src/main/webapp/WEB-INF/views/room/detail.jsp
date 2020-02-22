@@ -361,62 +361,66 @@
 			</div>
 			<hr/>
 			<%@ include file="../comment/comment.jsp" %>
-			<!-- 예약 폼 -->
-			<div class="room_reservation">
-				<form id="bookingForm" action="bookingRoom" method="post">
-					<input type="hidden" name="r_no" value="${roomInfo.roomVO.r_no}" />
-					<!-- 로그인 한 사람의 번호를 임의로 넣어놓음. -->
-					<input type="hidden" name="u_no" value="${login}" />
-					<div>
+			<!-- deleted된 거 안보이게 -->
+			<c:if test="${roomInfo.roomVO.r_deleted eq 0}">
+				<!-- 예약 폼 -->
+				<div class="room_reservation">
+					<form id="bookingForm" action="bookingRoom" method="post">
+						<input type="hidden" name="r_no" value="${roomInfo.roomVO.r_no}" />
+						<!-- 로그인 한 사람의 번호를 임의로 넣어놓음. -->
+						<input type="hidden" name="u_no" value="${login}" />
 						<div>
-							<span class="room_reservation_per_price">${roomInfo.roomVO.r_price}</span>
-							<span class="room_reservation_days">/ [0] 박</span>
+							<div>
+								<span class="room_reservation_per_price">${roomInfo.roomVO.r_price}</span>
+								<span class="room_reservation_days">/ [0] 박</span>
+							</div>
+							<div class="room_reservation_star">[평균 평점]</div>
+							<div class="room_reservation_total">(후기 [후기 갯수]개)</div>
+							<hr/>
 						</div>
-						<div class="room_reservation_star">[평균 평점]</div>
-						<div class="room_reservation_total">(후기 [후기 갯수]개)</div>
-						<hr/>
-					</div>
-					<div>
-						<div>날짜</div>
 						<div>
-							<input type="text" id="startDate" name="date_from_dummy" readonly>-<input type="text" id="endDate" name="date_to_dummy" readonly>
-							<div class="room_reservation_how_many"> 숙박 중 : 
-								<span class="room_reservation_how_many_people">0</span>
-								 / 
-								<span class="room_reservation_how_many_total">${roomInfo.roomVO.r_guests}</span>
-								 명
+							<div>날짜</div>
+							<div>
+								<input type="text" id="startDate" name="date_from_dummy" readonly>-<input type="text" id="endDate" name="date_to_dummy" readonly>
+								<div class="room_reservation_how_many"> 숙박 중 : 
+									<span class="room_reservation_how_many_people">0</span>
+									 / 
+									<span class="room_reservation_how_many_total">${roomInfo.roomVO.r_guests}</span>
+									 명
+								</div>
 							</div>
 						</div>
-					</div>
-					<div>
-						<div>인원</div>
-						<div class="room_reservation_people">
-							<label><input id="b_guest" type="number" name="b_guest" min="0" max="${roomInfo.roomVO.r_guests}" step="1"/> 명</label>
-							<div class="room_reservation_people_message "></div>	
+						<div>
+							<div>인원</div>
+							<div class="room_reservation_people">
+								<label><input id="b_guest" type="number" name="b_guest" min="0" max="${roomInfo.roomVO.r_guests}" step="1"/> 명</label>
+								<div class="room_reservation_people_message "></div>	
+							</div>
 						</div>
-					</div>
-					<div class="room_reservation_price" style="display:none;">
-						<div>합계</div>
-						<div class="room_reservation_price_real">[총 가격]</div>
-					</div>
-					<input type="hidden" name="b_total_price" id="b_total_price" />
-					<div>
-						<input type="button" class="room_reservation_choose_date"value="날짜선택"/>
-						<input type="button" class="room_reservation_submit"value="예약하기" style="display:none;"/>
-					</div>
-				</form>
-			</div>
-			<br/>
-			<div class="room_message">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#messageModal" data-whatever="${roomInfo.hostVO.u_name}">
-					호스트에게 쪽지 보내기
-				</button>
-				
-				<%@ include file="./messageModal.jsp" %>
-				
-				
-			</div>
-			<hr/>
+						<div class="room_reservation_price" style="display:none;">
+							<div>합계</div>
+							<div class="room_reservation_price_real">[총 가격]</div>
+						</div>
+						<input type="hidden" name="b_total_price" id="b_total_price" />
+						<div>
+							<input type="button" class="room_reservation_choose_date"value="날짜선택"/>
+							<input type="button" class="room_reservation_submit"value="예약하기" style="display:none;"/>
+						</div>
+					</form>
+				</div>
+				<br/>
+				<div class="room_message">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#messageModal" data-whatever="${roomInfo.hostVO.u_name}">
+						호스트에게 쪽지 보내기
+					</button>
+					
+					<%@ include file="./messageModal.jsp" %>
+					
+					
+				</div>
+				<hr/>
+			</c:if>
+			
 			
 		</div>
 		
