@@ -17,5 +17,6 @@ public class RoomCommentVO {
 	private int c_origin;
 	private int c_dep;
 	private int c_seq;
+	private int b_no;
 	
 }

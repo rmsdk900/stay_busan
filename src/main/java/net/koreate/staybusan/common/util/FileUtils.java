@@ -60,7 +60,7 @@ public class FileUtils {
 	
 	
 	// 전체 파일 올리기(controller랑 연결)
-	public List<String> uploadFile(MultipartFile[] files, int u_no, int r_no) throws Exception{
+	public List<String> uploadFileMod(MultipartFile[] files, int u_no, int r_no) throws Exception{
 		List<String> fileList = new ArrayList<>();
 		System.out.println("넣을 파일들 : "+files);
 		for(MultipartFile file : files) {

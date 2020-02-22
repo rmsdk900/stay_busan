@@ -38,7 +38,7 @@ public class FileController {
 //		System.out.println("넣을 파일들 : "+files);
 		
 		try {
-			list = FileUtils.getInstance(context).uploadFile(files, u_no, r_no);
+			list = FileUtils.getInstance(context).uploadFileMod(files, u_no, r_no);
 			// 확인
 			System.out.println("등록한 fileList 확인");
 			System.out.println(list);

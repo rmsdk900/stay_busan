@@ -5,49 +5,7 @@
 
 
 // content
-var content='';
-// content 정보 가져오기
-$(".room_comments_list").on("input", ".answer_content", function(){
-	content = $(this).val();
-});
 
-$(".room_comments_list").on("click",".collapsed",function(){
-	$(".room_comments_list").find(".answer_content").val("");
-});
-
-// 대댓글 달기
-$(".room_comments_list").on('click', ".btnReply", function(){
-	var u_no = $(this).attr("data-uno");
-	var r_no = $(this).attr("data-rno");
-	var u_name = $(this).attr("data-name");
-	var c_origin = $(this).attr("data-origin");
-	var c_dep = $(this).attr("data-dep");
-	var c_seq = $(this).attr("data-seq");
-	var c_content = content;	
-	
-//	console.log(u_no);
-//	console.log(r_no);
-//	console.log(u_name);
-//	console.log(c_origin);
-//	console.log(c_dep);
-//	console.log(c_seq);
-//	console.log(c_content);
-	
-	$.post(contextPath+"/comments/reply", {
-		u_no: u_no,
-		r_no: r_no,
-		u_name: u_name,
-		c_origin: c_origin,
-		c_dep: c_dep,
-		c_seq: c_seq,
-		c_content: c_content
-	}, function(data){
-		alert(data);
-		$("#collapse"+c_origin).collapse('hide');
-		getCommentList(1, r_no);
-	});
-	
-});
 
 
 // 후기 목록 띄우기
@@ -72,64 +30,50 @@ function getCommentList(page, r_no){
 		if(Object.keys(data).length > 0 ){
 			var str = "";
 			$(data.commentList).each(function(){
-				
-				str += "<div class='panel panel-default'>";
-				str += "	<div class='panel-heading' role='tab' id='heading"+this.c_no+"'>";
-				if(this.c_dep != 0){
-					str += "<div><b>내가 쓴 대댓글</b></div>";
+				// 댓글 칸
+				str += "<div class='room_comment_wrap"+this.c_no+"'>";
+				if (this.c_dep != 0){
+					str += "	<div><b>내가 쓴 대댓글</b></div>";
 				}
-				str += "		<h4 class='panel-title'>";
-				str += this.u_name;
-				str += "		</h4>";	
-				str += "		<div class='room_comment_profile' >";
+				str += "	<h4 class='room_comment_owner'>"+this.u_name+"</h4>";
+				str += "	<div class='room_comment_profile' >";
 				str += getGuestImg(this.u_no);
-				str += "		</div>";
+				str += "	</div>";
 				if(this.c_dep == 0){
 					str += "	<div>";
 					str += "★ "+this.c_star;
 					str += "	</div>";
 				}
-				str += "		<div>";
+				str += "	<div>";
 				str += getDate(this.c_regdate);
-				str += "		</div>";
-				str += "		<div>";
-				str += "			<span>";
-				str += this.c_content;
-				str += "			</span>";
-				str += "		</div>";
-				str += "		<a ";
-				str += " data-toggle='collapse' data-parent='#accordion' href='#collapse"+this.c_no+"' ";
-				str += " aria-expanded='true' aria-controls='collapse"+this.c_no+"' ";
-				str += " >";
-				str += "댓글"
-				str += "		</a>";
 				str += "	</div>";
-				str += "	<div id='collapse"+this.c_no+"' class='panel-collapse collapse' ";
-				str += " role='tabpanel' aria-labelledby='heading"+this.c_no+"' ";
-				str += " >";
-				str += "		<div class='panel-body'>";
-				
-				str += "			<div class='answer-to'>";
-				str += "				<span>";
-				str += this.u_name;
-				str += "				</span>";
-				str += "				<span>&nbsp;에게</span>";
-				str += "			</div>";
-				
-				str += "			<div class='answer-content'>";
-				str += "				<textarea name='c_content' class='answer_content'></textarea>";
-				str += "			</div>";
-				
-				str += "			<div>";
-				str += "				<input type='button' value='등록' class='btnReply' ";
-				str += "				data-uno='"+login+"' data-origin='"+this.c_origin+"' ";
-				str += "				data-dep='"+this.c_dep+"' data-seq='"+this.c_seq+"' ";
-				str += "				data-name='"+this.u_name+"' data-rno='"+this.r_no+"' />";
-				str += "			</div>";
-				
-				str += "		</div>";
+				str += "	<div>";
+				str += "		<span>";
+				str += this.c_content;
+				str += "		</span>";
+				str += "	</div>";
+				str += "	<div>";
+				str += "		<button type='button' class='btnOpenReply' data-c_no='"+this.c_no+"'";
+				str += " 		data-c_owner='"+this.u_name+"' ";
+				str += " 		data-c_origin='"+this.c_origin+"' ";
+				str += " 		data-c_dep='"+this.c_dep+"' ";
+				str += " 		data-c_seq='"+this.c_seq+"' ";
+				str += " 		data-r_no='"+this.r_no+"' ";
+				str += "		>";
+				str += "대댓글 쓰기";
+				str += "		</button>";
+				str += "	</div>";
+				str += "	<div id='room_comment_reply_wrap"+this.c_no+"'>";
 				str += "	</div>";
 				str += "</div>";
+				
+				
+				 
+					
+					
+					
+				
+				
 				
 				
 				
@@ -151,6 +95,103 @@ function getCommentList(page, r_no){
 	});
 }
 
+$(".room_comments_list").on("click", ".btnOpenReply", function(){
+	var c_no = $(this).attr("data-c_no");
+	var c_owner = $(this).attr("data-c_owner");
+	 
+	// 보내는데 필요함. 변경해야 됨
+	// 보내는 사람 번호 (임시)
+	var login_no = 1;
+	// 보내는 사람 이름 (임시) 
+	var login_name = "Admin(send)";
+	
+	var c_origin = $(this).attr("data-c_origin");
+	var c_dep = $(this).attr("data-c_dep");
+	var c_seq = $(this).attr("data-c_seq");
+	var r_no = $(this).attr("data-r_no");
+	
+	
+	console.log(c_no);
+	
+	console.log(c_owner);
+	// 대댓글 창 생성
+	var html = "";
+	
+	html += "	<div class='answer_to'>";
+	html += "		<span>"+c_owner+"</span><span>&nbsp;에게</span>";
+	html += "	</div>";
+	html += "	<div class='answer_content'>";
+	html += "		<textarea id='c_content"+c_no+"' ></textarea>";
+	html += "	</div>";
+	html += "	<div>";
+	html += "		<button type='button' class='btnReplySubmit'";
+	// 이부분 나중에 로그인 한사람의 이름으로 변경해야 함!
+	html += "		data-sender='"+login_no+"'";
+	html += "		data-sender_name='"+login_name+"'";
+	// 정상적인거
+	html += "		data-room='"+r_no+"'";
+	html += "		data-origin='"+c_origin+"'";
+	html += "		data-dep='"+c_dep+"'";
+	html += "		data-seq='"+c_seq+"'";
+	// 원래 글의 번호
+	html += "		data-no='"+c_no+"'";
+	html += "		>대댓글 보내기";
+	html += "		</button>";
+	html += "		<button type='button' class='btnReplyClose' data-no='"+c_no+"'>닫기</button>";
+	html += "	</div>";
+	
+	$("#room_comment_reply_wrap"+c_no).append(html);
+	
+});
+// 대댓글 창 닫기
+$(".room_comments_list").on("click", ".btnReplyClose", function(){
+	var c_no = $(this).attr("data-no");
+	$("#room_comment_reply_wrap"+c_no).html("");
+});
+// 대댓글 달기
+$(".room_comments_list").on("click", ".btnReplySubmit", function(){
+	
+	var u_no = $(this).attr("data-sender");
+	var r_no = $(this).attr("data-room");
+	var u_name = $(this).attr("data-sender_name");
+	var c_origin = $(this).attr("data-origin");
+	var c_dep = $(this).attr("data-dep");
+	var c_seq = $(this).attr("data-seq");
+	
+	// 댓글 보내려는 글의 번호 
+	var no = $(this).attr("data-no");
+	
+	var c_content = $("#c_content"+no).val();	
+	
+	console.log(u_no);
+	console.log(r_no);
+	console.log(u_name);
+	console.log(c_origin);
+	console.log(c_dep);
+	console.log(c_seq);
+	console.log(c_content);
+	
+	$.post(contextPath+"/comments/reply", {
+		u_no: u_no,
+		r_no: r_no,
+		u_name: u_name,
+		c_origin: c_origin,
+		c_dep: c_dep,
+		c_seq: c_seq,
+		c_content: c_content
+	}, function(data){
+		alert(data);
+		getCommentList(1, r_no);
+	});
+	
+});
+
+
+
+
+
+
+// ------여기부턴 공사중 아님 --------
 
 // 게스트 이미지 불러오기
 function getGuestImg(u_no){
