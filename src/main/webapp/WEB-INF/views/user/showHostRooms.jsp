@@ -47,37 +47,16 @@
 							<div>
 								<input type="button" value="댓글 관리" data-r_no="${room.r_no}" class="btnReview" />
 								<input type="button" value="${room.r_no}번 방 삭제" data-r_no="${room.r_no}" data-toggle="modal"
-								data-target="#delRoom${room.r_no}"  id="modalBtnDelRoom"/>
+								data-target="#delRoom"  class="modalBtnDelRoom"/>
 							</div>
-							<div class="modal fade" id="delRoom${room.r_no}" 
-							tabindex="-1" role="dialog" 
-							aria-labelledby="myModalLabel" aria-hidden="true">
-								<div class="modal-dialog modal-sm" >
-									<div class="modal-content">
-										<div class="modal-header">
-											<button type="button" class="close" 
-											data-dismiss="modal" aria-label="Close">
-												<span aria-hidden="true" >&times;</span>
-											</button>
-											<h4 class="modal-title" id="myModalLabel${room.r_no}">${room.r_no}번 방 삭제 확인</h4>
-										</div>
-										<div class="modal-body">
-											<p><c:out value="${room.r_no}"/>번 방을 정말 삭제하시겠습니까?</p>	
-										</div>
-										<div class="modal-footer">
-											<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-											<button type="button" class="btn btn-primary" id="btnDelRoom${room.r_no}" >방 삭제</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- 방 삭제 기능 구현 -->
-							<script>
-								
-							</script>
+							
+							
+							
 						</c:if>
 					</c:if>
 			</c:forEach>
+			<!-- 방 삭제 기능 구현 -->
+			<div class="delRoomView"></div>
 		</div>
 		
 	</div>
@@ -118,3 +97,45 @@
 		
 	</div>
 </c:if>
+<script>
+	$(".modalBtnDelRoom").on("click", function(){
+		var r_no=$(this).attr("data-r_no");
+		
+		var html = "";
+		
+		html += "<div class='modal fade' id='delRoom' ";
+		html += " tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true' >";
+		html += "	<div class='modal-dialog modal-sm'>";
+		html += "		<div class='modal-content'>";
+		html += "			<div class='modal-header'>";
+		html += "				<button type='button' class='close' data-dismiss='modal' aria-label='close' >";
+		html += "					<span aria-hidden='true'>&times;</span>";
+		html += "				<button>";
+		html += "				<h4 class='modal-title' id='myModalLabel' >"+r_no+"번 방 삭제 확인</h4>";
+		html += "			</div>";
+		html += "			<div class='modal-body'>";
+		html += "				<p>"+r_no+"번 방을 정말 삭제하시겠습니까?</p>";
+		html += "			</div>";
+		html += "			<div class='modal-footer'>";
+		html += "			<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>";
+		html += "			<button type='button' class='btn btn-primary' id='btnDelRoom' data-r_no='"+r_no+"'>방 삭제</button>";
+		html += "			</div>";
+		html += "		</div>";
+		html += "	</div>";
+		html += "</div>";
+		
+		$(".delRoomView").html(html);
+		
+	});
+	
+	$(".delRoomView").on("click", "#btnDelRoom", function(){
+		var r_no = $(this).attr("data-r_no");
+		console.log(r_no);
+		$.post(contextPath+"/room/hide", {
+			r_no: r_no
+		}, function(data){
+			console.log(data);
+			location.reload();
+		});
+	});
+</script>

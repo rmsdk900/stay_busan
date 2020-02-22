@@ -99,6 +99,16 @@ public class RoomDetailController {
 		return "redirect:/room/detail?r_no="+dto.getR_no();
 	}
 	
+	@PostMapping("/hide")
+	@ResponseBody
+	public RoomVO hideRoom(int r_no) throws Exception{
+		System.out.println("받은 방 번호 :"+r_no);
+		RoomVO vo = rds.hideRoom(r_no);
+		System.out.println("변경 결과 : "+vo);
+		
+		return vo;
+	}
+	
 	
 	//테스트
 	@GetMapping("transfer")

@@ -99,4 +99,6 @@
 
 
 <script src="${pageContext.request.contextPath}/resources/js/upload.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/show.js"></script>
+
 <%@ include file="../common/footer.jsp" %>

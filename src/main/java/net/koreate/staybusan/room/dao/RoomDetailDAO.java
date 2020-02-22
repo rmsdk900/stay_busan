@@ -70,7 +70,11 @@ public interface RoomDetailDAO {
 	
 	// 게스트한테서 돈이 빠져나가야 함. 
 	@Update("UPDATE user SET u_balance=u_balance-#{b_total_price} WHERE u_no=#{u_no}")
-	void pay(int u_no, int b_total_price);
+	void pay(int u_no, int b_total_price)throws Exception;
+	
+	// 방 임시 삭제
+	@Update("UPDATE rooms SET r_deleted=1 WHERE r_no=#{r_no}")
+	void hideRoom(int r_no) throws Exception;
 	
 	
 	

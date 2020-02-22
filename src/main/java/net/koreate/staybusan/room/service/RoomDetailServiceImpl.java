@@ -93,7 +93,15 @@ public class RoomDetailServiceImpl implements RoomDetailService{
 		rdd.modifyRoomAmenities(vo);
 		return rdd.getAmenities(vo.getR_no());
 	}
-
+	
+	@Transactional
+	@Override
+	public RoomVO hideRoom(int r_no) throws Exception {
+		// 임시 삭제
+		rdd.hideRoom(r_no);
+		
+		return rdd.readRoomVO(r_no);
+	}
 
 	@Override
 	public void modRoomImgs(ModifyRoomImgDTO dto) throws Exception {
@@ -110,6 +118,8 @@ public class RoomDetailServiceImpl implements RoomDetailService{
 			rid.insertFileName(fullName, dto.getU_no(), dto.getR_no());
 		}
 	}
+
+	
 	
 	
 	

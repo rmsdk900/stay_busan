@@ -24,5 +24,8 @@ public interface RoomDetailService {
 
 	// 방 이미지 수정하기
 	void modRoomImgs(ModifyRoomImgDTO dto)throws Exception;
+	
+	// 방 임시 삭제 기능
+	RoomVO hideRoom(int r_no) throws Exception;
 
 }
