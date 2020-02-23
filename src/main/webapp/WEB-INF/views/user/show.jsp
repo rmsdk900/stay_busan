@@ -86,7 +86,7 @@
 		<c:otherwise>
 			<%@ include file="./showHostRooms.jsp" %>
 			<!-- 후기들 -->
-			<%@ include file="../comment/comment_host.jsp" %>
+			<%@ include file="../comment/comment.jsp" %>
 			<script src="${pageContext.request.contextPath}/resources/js/show_host.js"></script>
 		</c:otherwise>
 	</c:choose>

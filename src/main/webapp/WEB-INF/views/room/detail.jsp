@@ -6,6 +6,7 @@
 <script type="text/javascript">
 	var r_no = ${roomInfo.roomVO.r_no};	
 	var u_no = ${roomInfo.roomVO.u_no};
+	var login = ${login};
 </script>
 <style>
 	.room_imgs {

@@ -2,12 +2,6 @@
  * 
  */
 
-
-
-// content
-
-
-
 // 후기 목록 띄우기
 $(".btnReview").on("click",function(){
 	var r_no = $(this).attr("data-r_no");
@@ -26,7 +20,7 @@ function getCommentList(page, r_no){
 		// data.star_avg = 평균 평점
 //		console.log(Object.keys(data).length);
 		
-		console.log(data.commentList);
+		console.log(data);
 		if(Object.keys(data).length > 0 ){
 			var str = "";
 			$(data.commentList).each(function(){
@@ -48,7 +42,7 @@ function getCommentList(page, r_no){
 				str += getDate(this.c_regdate);
 				str += "	</div>";
 				str += "	<div>";
-				str += "		<span>";
+				str += "		<span id='room_comment_comment"+this.c_no+"'>";
 				str += this.c_content;
 				str += "		</span>";
 				str += "	</div>";
@@ -62,24 +56,46 @@ function getCommentList(page, r_no){
 				str += "		>";
 				str += "대댓글 쓰기";
 				str += "		</button>";
+				str += "		<button class='btnOpenReport'";
+				str += "		data-c_no='"+this.c_no+"'";
+				// 여기도 나중에 로그인한 사람 걸로 바꿔줘야 함.
+				str += "		data-reporter='"+login+"'";
+				str += "		data-bad_person='"+this.u_no+"'";
+				str += "		>";
+				str += "		댓글 신고</button>";
+				
+				// 이것도 로그인 부분의 유저 번호를 바꿔야 함. 
+				if(this.u_no == login){
+					str += "		<button";
+					str += "		class='btnModComment'";
+					str += "		data-c_no='"+this.c_no+"'";
+					str += "		data-room='"+this.r_no+"'";
+					str += ">";
+					str += "수정";
+					str += "		</button>";
+					str += "		<button";
+					str += "		class='btnDelComment'";
+					str += "		data-c_no='"+this.c_no+"'";
+					str += "		data-room='"+this.r_no+"'";
+					str += ">";
+					str += "삭제";
+					str += "		</button>";
+					
+				}
 				str += "	</div>";
-				str += "	<div id='room_comment_reply_wrap"+this.c_no+"'>";
+				str += "	<div class='room_comment_reply_cover'>";
+				str += "		<div id='room_comment_reply_wrap"+this.c_no+"'>";
+				str += "		</div>";
+				str += "	</div>";
+				str += "	<div class='room_comment_mod_cover'>";
+				str += "		<div id='room_comment_mod_wrap"+this.c_no+"'>";
+				str += "		</div>";
 				str += "	</div>";
 				str += "</div>";
 				
-				
-				 
-					
-					
-					
-				
-				
-				
-				
-				
 			});
 			$(".room_comments_list").html(str);
-			makePage(data.pageMaker);
+			makePage(data.pageMaker, r_no);
 			setCommentTotal(data.pageMaker);
 			setStarAvg(data.star_avg);
 		}else {
@@ -94,7 +110,7 @@ function getCommentList(page, r_no){
 		console.log("Request Failed: "+err);
 	});
 }
-
+// 대댓글 작성 창 열기
 $(".room_comments_list").on("click", ".btnOpenReply", function(){
 	var c_no = $(this).attr("data-c_no");
 	var c_owner = $(this).attr("data-c_owner");
@@ -186,13 +202,118 @@ $(".room_comments_list").on("click", ".btnReplySubmit", function(){
 	
 });
 
+// 댓글 수정 창 열기
+$(".room_comments_list").on("click", ".btnModComment", function(){
+	var c_no = $(this).attr("data-c_no");
+	var r_no = $(this).attr("data-room");
+	var c_comment = $("#room_comment_comment"+c_no).html();
+	
+	var html = "";
+	html += "<div>";
+	html += "<h3>댓글 수정</h3>";
+	html += "</div>";
+	html += "<div class='mod_comment'>";
+	html += "	<textarea id='mod_content"+c_no+"' >"+c_comment+"</textarea>";
+	html += "</div>";
+	html += "<div>";
+	html += "	<button type='button' class='btnModCommentSubmit'";
+	html += "	data-c_no='"+c_no+"'";
+	html += "	data-room='"+r_no+"'";
+	html += ">";
+	html += "	수정하기</button>";
+	html += "	<button type='button' class='btnModCommentClose' data-c_no='"+c_no+"'>";
+	html += "	닫기</button>";
+	html += "</div>";
+	
+	$("#room_comment_mod_wrap"+c_no).html(html);
+});
+
+// 댓글 수정창 닫기
+$(".room_comments_list").on("click", ".btnModCommentClose", function(){
+	var c_no = $(this).attr("data-c_no");
+	
+	$("#room_comment_mod_wrap"+c_no).html("");
+});
+// 댓글 수정 요청
+$(".room_comments_list").on("click", ".btnModCommentSubmit", function(){
+	var c_no = $(this).attr("data-c_no");
+	var r_no = $(this).attr("data-room");
+	var mod_content = $("#mod_content"+c_no).val();
+	
+	console.log(mod_content);
+	
+	$.post(contextPath+"/comments/mod", {
+		c_no : c_no,
+		c_content : mod_content
+	}, function(data){
+		console.log(data);
+		if(data != null && data != ''){
+			getCommentList(1, r_no);
+		}
+	});
+});
+
+//댓글 삭제 - 바로 하자
+$(".room_comments_list").on("click", ".btnDelComment", function(){
+	var c_no = $(this).attr("data-c_no");
+	var r_no = $(this).attr("data-room");
+	
+	$.post(contextPath+"/comments/del/"+c_no, {}, function(data){
+		alert(data);
+		getCommentList(1, r_no);
+	});
+});
+
+// 신고모달 창 띄우기
+$(".room_comments_list").on("click", ".btnOpenReport", function(){
+	
+	// 정보 기입
+	var c_no = $(this).attr("data-c_no");
+	var reporter = $(this).attr("data-reporter");
+	var bad_person = $(this).attr("data-bad_person");
+	var bad_content = $("#room_comment_comment"+c_no).html();
+	// 집어 넣어놓기
+	var str = "";
+	str += "<input type='hidden' name='c_no' id='ban_no' value='"+c_no+"'/>";
+	str += "<input type='hidden' name='b_c_reporter' id='ban_reporter' value='"+reporter+"'/>";
+	str += "<input type='hidden' name='b_c_bad_person' id='ban_bad_person' value='"+bad_person+"'/>";
+	str += "<input type='hidden' name='c_content' id='ban_content' value='"+bad_content+"'/>";
+	$(".hiddenReport").html(str);
+	$("#reportModal").show();
+});
+// 신고모달창 감추기
+function closeModal(){
+	$(".hiddenReport").html("");
+	$(".reportModals").hide();
+}
+// 신고하기
+function reportSubmit(){
+	var b_c_reason = $(".report_content").val();
+	if(b_c_reason != null && b_c_reason != ''){
+		$.post(contextPath+"/comments/report", {
+			c_no: $("#ban_no").val(),
+			b_c_reporter: $("#ban_reporter").val(),
+			b_c_bad_person: $("#ban_bad_person").val(),
+			c_content: $("#ban_content").val(),
+			b_c_reason: $(".report_content").val()
+			
+		}, function(data){
+			console.log(data);
+			alert("신고 완료!");
+			location.reload();
+		});
+	}else {
+		alert("신고 내용을 기입해주세요!");
+		$(".report_content").focus();
+		return;
+	}
+	
+	
+}
 
 
 
-
-
-// ------여기부턴 공사중 아님 --------
-
+// --- 건들 부분 없음 ----
 // 게스트 이미지 불러오기
 function getGuestImg(u_no){
 	$.getJSON(contextPath+"/getMyImg/"+u_no, function(data){
@@ -213,18 +334,18 @@ function getDate(time){
 	return year+"년 "+month+"월";
 }
 // 페이징 처리
-function makePage(pm){
+function makePage(pm, r_no){
 	var str="";
 	str += "<ul>";
 	if(pm.prev){
-		str += "<li><a href='"+(pm.startPage-1)+"'>이전</a></li>";
+		str += "<li><a href='"+(pm.startPage-1)+"' data-r_no='"+r_no+"'>이전</a></li>";
 	}
 	for(var i=pm.startPage;i<=pm.endPage;i++){
 		var strClass = pm.cri.page == i? 'class=active' :'';
-		str += "<li "+strClass+" ><a href='"+i+"'>"+i+"</a></li>";
+		str += "<li "+strClass+" ><a href='"+i+"' data-r_no='"+r_no+"'>"+i+"</a></li>";
 	}
 	if(pm.next){
-		str += "<li><a href='"+(pm.endPage+1)+"'>다음</a></li>";
+		str += "<li><a href='"+(pm.endPage+1)+"' data-r_no='"+r_no+"'>다음</a></li>";
 	}
 	str += "</ul>";
 	$(".room_comments_pagination").html(str);
@@ -232,8 +353,9 @@ function makePage(pm){
 // 페이지 클릭 시
 $(".room_comments_pagination").on("click", "li a", function(e){
 	e.preventDefault();
+	var r_no = $(this).attr("data-r_no");
 	var commentPage = $(this).attr("href");
-	getCommentList(commentPage);
+	getCommentList(commentPage, r_no);
 });
 // 후기 갯수 구하기
 function setCommentTotal(pm){

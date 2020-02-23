@@ -21,7 +21,6 @@
 	</div>
 	<hr/>
 	<div class="room_comments_list" >
-	<!-- <div class="room_comments_list panel-group" id="accordion" role="tablist" aria-multiselectable="true" > -->
 		
 	</div>
 	

@@ -65,7 +65,8 @@ public class RoomDetailServiceImpl implements RoomDetailService{
 				 rdd.deposit(b_no, vo.getU_no(), host, vo.getB_total_price());
 				 // 방 산 사람 돈 빼기
 				 rdd.pay(vo.getU_no(), vo.getB_total_price());
-				 
+				 // 방 예약 건수 올리기
+				 rdd.updateBookedCnt(vo.getR_no());
 				 
 			 }
 			

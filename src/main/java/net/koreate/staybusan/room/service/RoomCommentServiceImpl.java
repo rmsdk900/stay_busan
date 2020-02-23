@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import net.koreate.mvc.common.util.Criteria;
 import net.koreate.mvc.common.util.PageMaker;
 import net.koreate.staybusan.room.dao.RoomCommentDAO;
+import net.koreate.staybusan.room.vo.BanCommentVO;
 import net.koreate.staybusan.room.vo.CommentVO;
 
 @Service
@@ -69,6 +70,40 @@ public class RoomCommentServiceImpl implements RoomCommentService{
 		
 		return message;
 	}
+	
+	@Transactional
+	@Override
+	public String delComment(int c_no) throws Exception {
+		String message= null;
+		// comment 삭제
+		if(dao.delComment(c_no)) {
+			message = "댓글 삭제 성공";
+		}else {
+			message = "댓글 삭제 실패";
+		}
+		return message;
+	}
+
+	@Transactional
+	@Override
+	public CommentVO modComment(int c_no, String c_content) throws Exception {
+		// 기존 Comment 수정
+		dao.modComment(c_no, c_content);
+		// 바뀐 거 불러오기
+		return dao.getComment(c_no);
+	}
+	
+	@Transactional
+	@Override
+	public List<BanCommentVO> banComment(BanCommentVO vo) throws Exception {
+		// 일단 넣기
+		dao.banComment(vo);
+		// 그리고 불러오기
+		return dao.getBanComment(vo.getC_no());
+	}
+	
+	
+	
 	
 	
 	
